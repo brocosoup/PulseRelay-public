@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Now Playing Overlay</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    body {
+      background: transparent;
+      overflow: hidden;
+      margin: 0;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .now-playing {
+      background: linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(40, 20, 50, 0.95) 100%);
+      border-radius: 16px;
+      padding: 20px;
+      max-width: 500px;
+      color: #fff;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(145, 70, 255, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .now-playing.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .now-playing.hidden {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .album-art {
+      width: 100px;
+      height: 100px;
+      min-width: 100px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .album-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .album-art i {
+      font-size: 40px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .track-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .music-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .music-icon {
+      width: 24px;
+      height: 24px;
+      background: rgba(145, 70, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+    }
+
+    .music-icon i {
+      font-size: 12px;
+      color: #9146FF;
+    }
+
+    .now-playing-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 600;
+    }
+
+    .track-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #fff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .track-artist {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.8);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+
+    .track-album {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Equalizer animation */
+    .equalizer {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 20px;
+    }
+
+    .equalizer-bar {
+      width: 3px;
+      background: linear-gradient(to top, #9146FF, #b084ff);
+      border-radius: 2px;
+      animation: equalize 0.8s ease-in-out infinite;
+    }
+
+    .equalizer-bar:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .equalizer-bar:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .equalizer-bar:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    .equalizer-bar:nth-child(4) {
+      animation-delay: 0.6s;
+    }
+
+    @keyframes equalize {
+      0%, 100% {
+        height: 8px;
+      }
+      50% {
+        height: 20px;
+      }
+    }
+
+    .paused-indicator {
+      display: none;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+      font-style: italic;
+    }
+
+    .now-playing.paused .equalizer {
+      display: none;
+    }
+
+    .now-playing.paused .paused-indicator {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="now-playing" id="nowPlaying">
+    <div class="album-art" id="albumArt">
+      <i class="bi bi-music-note-beamed"></i>
+    </div>
+
+    <div class="track-details">
+      <div class="music-indicator">
+        <div class="music-icon">
+          <i class="bi bi-music-note"></i>
+        </div>
+        <span class="now-playing-label">Now Playing</span>
+        <div class="equalizer">
+          <div class="equalizer-bar"></div>
+          <div class="equalizer-bar"></div>
+          <div class="equalizer-bar"></div>
+          <div class="equalizer-bar"></div>
+        </div>
+        <div class="paused-indicator">(Paused)</div>
+      </div>
+
+      <div class="track-title" id="trackTitle">Loading...</div>
+      <div class="track-artist" id="trackArtist">Waiting for music</div>
+      <div class="track-album" id="trackAlbum"></div>
+    </div>
+  </div>
+
+  <!-- Hidden data for auth token -->
+  <div id="authData" data-token="<%= token %>" style="display: none;"></div>
+
+  <script src="/js/now-playing-overlay.js"></script>
+</body>
+</html>

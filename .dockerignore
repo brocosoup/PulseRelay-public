@@ -1,0 +1,72 @@
+# Dependencies
+node_modules
+npm-debug.log*
+
+# Environment variables (will be handled separately)
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Logs
+logs
+*.log
+pids
+*.pid
+*.seed
+
+# Runtime data
+data/*.db
+data/*.db-journal
+storage/*.db
+
+# Temporary folders
+temp
+tmp
+
+# Development tools
+.git
+.gitignore
+README.md
+.vscode
+.idea
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Docker files
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Test files
+test-*.js
+*.test.js
+coverage
+
+# Documentation
+docs
+*.md
+API-TESTING.md
+WHITELIST.md
+
+# Scripts not needed in production
+scripts/setup.js
+scripts/dev-mode.js
+setup.sh
+
+# Development dependencies
+.eslintrc*
+jest.config*
+
+# Backup files
+*.bak
+*.backup
+*.old

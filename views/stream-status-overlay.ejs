@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stream Status Overlay</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: transparent; 
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .stream-status-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 2000;
+        }
+        
+        .stream-key-item {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(145, 70, 255, 0.3);
+            border-radius: 12px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+            min-width: 200px;
+            position: relative;
+        }
+        
+        .obs-visibility-badge {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .obs-visibility-badge.visible {
+            background: #00ff00;
+            color: #000;
+        }
+        
+        .obs-visibility-badge.hidden {
+            background: #666;
+            color: #fff;
+            opacity: 0.5;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            flex-shrink: 0;
+        }
+        
+        .status-indicator.live {
+            background: #00ff00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        
+        .status-indicator.offline {
+            background: #ff0000;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        
+        .status-text {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .status-text.obs-visible {
+            background: rgba(0, 128, 0, 0.7);
+            border: 1px solid rgba(0, 200, 0, 0.9);
+        }
+        
+        .status-text.obs-hidden {
+            background: rgba(139, 0, 0, 0.7);
+            border: 1px solid rgba(200, 0, 0, 0.9);
+        }
+        
+        .status-text.obs-unknown {
+            background: rgba(100, 100, 100, 0.4);
+            border: 1px solid rgba(100, 100, 100, 0.6);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stream-status-container" id="streamStatusContainer">
+        <!-- Stream keys will be dynamically added here -->
+    </div>
+    
+    <!-- CryptoJS for OBS WebSocket authentication -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="/js/stream-status-overlay.js"></script>
+</body>
+</html>

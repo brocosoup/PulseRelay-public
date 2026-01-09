@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PulseRelay</string>
+    <string name="send_location">📍 Send Location Now</string>
+    <string name="upload_picture">📤 Upload Media to Overlay</string>
+    <string name="clear_queue">🗑️ Clear Queue</string>
+    <string name="background_tracking">Background Tracking</string>
+    <string name="tracking_status">Tracking Status</string>
+    <string name="settings_title">Settings</string>
+    <string name="info_text">Configure your server URL and API token in settings. Get your API token from the PulseRelay dashboard.</string>
+    
+    <!-- Settings -->
+    <string name="api_settings">🔌 Server Configuration</string>
+    <string name="api_url_title">Server URL</string>
+    <string name="api_url_summary">PulseRelay server address</string>
+    <string name="api_url_default">https://pulse.brocosoup.fr</string>
+    <string name="api_token_title">API Token</string>
+    <string name="api_token_summary">JWT token from PulseRelay dashboard</string>
+    
+    <string name="tracking_settings">⚙️ Tracking Settings</string>
+    <string name="update_interval_title">Update Interval (seconds)</string>
+    <string name="update_interval_summary">How often to send location updates</string>
+    <string name="auto_start_title">Auto-start on boot</string>
+    <string name="auto_start_summary">Automatically start tracking when device boots</string>
+    
+    <!-- Status Messages -->
+    <string name="location_sent">✓ Location sent successfully</string>
+    <string name="location_error">✗ Failed to send location</string>
+    <string name="tracking_started">▶ Background tracking started</string>
+    <string name="tracking_stopped">⏹ Background tracking stopped</string>
+    <string name="configure_api">⚠ Please configure API URL first</string>
+    <string name="picture_uploading">Uploading media…</string>
+    <string name="picture_uploaded">✓ Media uploaded successfully</string>
+    <string name="picture_upload_error">✗ Failed to upload media</string>
+    <string name="no_image_selected">No image selected</string>
+    
+    <!-- Pulse Deck -->
+    <string name="stream_deck_title">Pulse Deck</string>
+    <string name="button_icon">Button icon</string>
+    <string name="target_channel_hint">Target channel (optional)</string>
+    
+    <!-- Location Sharing -->
+    <string name="location_sharing">Location Sharing</string>
+    <string name="location_sharing_enabled">Enable Location Sharing (Account-Wide)</string>
+    <string name="location_sharing_description">Control whether this account can share location data with viewers</string>
+    <string name="location_settings_loading">Loading settings…</string>
+    <string name="location_settings_saved">Settings saved successfully</string>
+    <string name="location_settings_error">Failed to update settings</string>
+    <string name="location_mode">Location Mode</string>
+    <string name="location_mode_gps">GPS / Device Location</string>
+    <string name="location_mode_fixed">Fixed Location</string>
+    <string name="fixed_location_settings">Fixed Location Settings</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="location_name">Location Name (Optional)</string>
+    <string name="pick_on_map">🗺️ Pick on Map</string>
+    <string name="latitude_hint">e.g. 48.8566</string>
+    <string name="longitude_hint">e.g. 2.3522</string>
+    <string name="location_name_hint">e.g. Paris, France</string>
+    <string name="invalid_coordinates">Invalid latitude or longitude</string>
+    
+    <!-- Video Player -->
+    <string name="video_player_title">Stream Video</string>
+    <string name="video_loading">Loading stream…</string>
+    <string name="video_error">Failed to load stream</string>
+    <string name="video_play">Play</string>
+    <string name="video_pause">Pause</string>
+    <string name="video_fullscreen">Fullscreen</string>
+    <string name="video_exit_fullscreen">Exit Fullscreen</string>
+    <string name="video_refresh">Refresh</string>
+    <string name="video_mute">Mute</string>
+    <string name="video_unmute">Unmute</string>
+    <string name="video_select_channel">Select Channel</string>
+    
+    <!-- Video Settings -->
+    <string name="video_settings">📺 Video Settings</string>
+    <string name="default_twitch_channel_title">Default Channel</string>
+    <string name="default_twitch_channel_summary">Twitch channel to load by default</string>
+    <string name="auto_load_video_title">Auto-load Video</string>
+    <string name="auto_load_video_summary">Automatically load video when opening player</string>
+    <string name="video_quality_title">Video Quality</string>
+    <string name="video_quality_summary">Preferred stream quality</string>
+    
+    <!-- TTS Audio Channel Options -->
+    <string-array name="tts_audio_channel_entries">
+        <item>Navigation (Android Auto Compatible)</item>
+        <item>Voice Call</item>
+        <item>Media</item>
+        <item>Notification</item>
+        <item>Alarm</item>
+    </string-array>
+    
+    <string-array name="tts_audio_channel_values">
+        <item>navigation</item>
+        <item>voice</item>
+        <item>media</item>
+        <item>notification</item>
+        <item>alarm</item>
+    </string-array>
+    
+    <!-- Video Quality Options -->
+    <string-array name="video_quality_entries">
+        <item>Auto</item>
+        <item>1080p60</item>
+        <item>720p60</item>
+        <item>480p</item>
+        <item>360p</item>
+        <item>160p</item>
+    </string-array>
+    
+    <string-array name="video_quality_values">
+        <item>auto</item>
+        <item>1080p60</item>
+        <item>720p60</item>
+        <item>480p</item>
+        <item>360p</item>
+        <item>160p</item>
+    </string-array>
+</resources>

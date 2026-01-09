@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- Message Header (Username + Badges + Timestamp) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="4dp">
+
+        <!-- Badges Container -->
+        <LinearLayout
+            android:id="@+id/badgesContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginEnd="4dp">
+            <!-- Badges will be added programmatically -->
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Username"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvTimestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12:34"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- Message Text -->
+    <TextView
+        android:id="@+id/tvMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Chat message text here"
+        android:textColor="@color/text_primary"
+        android:textSize="14sp"
+        android:lineSpacingMultiplier="1.2"
+        android:layout_marginBottom="4dp" />
+
+    <!-- Action Buttons (Icons Only) - MOVED TO BOTTOM -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="start">
+
+        <ImageButton
+            android:id="@+id/btnDeleteMessage"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_delete"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Delete message"
+            android:layout_marginEnd="2dp"
+            android:tint="@color/danger_color"
+            android:padding="3dp" />
+
+        <ImageButton
+            android:id="@+id/btnTimeoutUser"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_timeout"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Timeout user"
+            android:layout_marginEnd="2dp"
+            android:tint="@color/warning_color"
+            android:padding="3dp" />
+
+        <ImageButton
+            android:id="@+id/btnIgnoreUser"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_speaker"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Toggle TTS for user"
+            android:layout_marginEnd="2dp"
+            android:padding="3dp" />
+
+        <ImageButton
+            android:id="@+id/btnSetAlias"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_edit"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Set TTS alias"
+            android:layout_marginEnd="6dp"
+            android:tint="@color/twitch_purple"
+            android:padding="3dp" />
+    </LinearLayout>
+
+</LinearLayout>

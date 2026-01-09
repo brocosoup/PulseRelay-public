@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | PulseRelay</title>
+    
+    <!-- Bootstrap 5 with Dark Theme -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Leaflet Maps -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin=""/>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Twitch Dark Theme -->
+    <link href="/css/style.css" rel="stylesheet">
+    
+    <!-- Page-specific stylesheets -->
+    <% if (typeof stylesheets !== 'undefined') { %>
+        <% stylesheets.forEach(stylesheet => { %>
+            <link href="<%= stylesheet %>" rel="stylesheet">
+        <% }); %>
+    <% } %>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="PulseRelay - Professional RTMP streaming server with Twitch integration">
+    <meta name="theme-color" content="#9146ff">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    
+    <!-- Force Dark Theme Inline Styles for Testing -->
+    <style>
+        /* Emergency dark theme override */
+        body {
+            background-color: #0e0e10 !important;
+            color: #efeff1 !important;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        }
+        .navbar {
+            background-color: #18181b !important;
+            border-bottom: 1px solid rgba(145, 70, 255, 0.2) !important;
+        }
+        .card {
+            background-color: #18181b !important;
+            border: 1px solid rgba(145, 70, 255, 0.2) !important;
+            color: #efeff1 !important;
+        }
+        .text-purple {
+            color: #9146ff !important;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #9146ff 0%, #772ce8 100%) !important;
+            border: none !important;
+        }
+    </style>
+</head>
+<body class="bg-dark-primary">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-broadcast-tower"></i>
+                PulseRelay
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <% if (typeof user !== 'undefined' && user) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">
+                                <i class="fas fa-tachometer-alt me-1"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-sliders-h me-1"></i>
+                                Control
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="/stream">
+                                        <i class="fas fa-video me-2"></i>
+                                        Test Pattern
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" id="nav-music-player" href="/music-overlay">
+                                        <i class="fas fa-music me-2"></i>
+                                        Music Player
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="#" data-action="showDestinations">
+                                        <i class="fas fa-share-alt me-2"></i>
+                                        Destinations
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-layer-group me-1"></i>
+                                Overlays
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item overlay-link" id="nav-map-overlay" href="/map-overlay" target="_blank">
+                                        <i class="fas fa-map-marked-alt me-2"></i>
+                                        Map Overlay
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item overlay-link" id="nav-telemetry-overlay" href="/telemetry-overlay" target="_blank">
+                                        <i class="fas fa-tachometer-alt me-2"></i>
+                                        Telemetry Overlay
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item overlay-link" id="nav-picture-overlay" href="/picture-overlay" target="_blank">
+                                        <i class="fas fa-images me-2"></i>
+                                        Media Overlay
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item overlay-link" id="nav-stream-status-overlay" href="/stream-status-overlay" target="_blank">
+                                        <i class="fas fa-signal me-2"></i>
+                                        Stream Status
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item overlay-link" id="nav-now-playing-overlay" href="/now-playing-overlay" target="_blank">
+                                        <i class="fas fa-music me-2"></i>
+                                        Now Playing
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-action="showStats">
+                                <i class="fas fa-chart-bar me-1"></i>
+                                Statistics
+                            </a>
+                        </li>
+                    <% } %>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <% if (typeof user !== 'undefined' && user) { %>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <% if (user.profile_image_url) { %>
+                                    <img src="<%= user.profile_image_url %>" alt="<%= user.display_name || user.username %>" class="user-avatar">
+                                <% } else { %>
+                                    <i class="fas fa-user-circle me-2" style="font-size: 1.5rem;"></i>
+                                <% } %>
+                                <span class="d-none d-md-inline"><%= user.display_name || user.username %></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="#" data-action="showProfile">
+                                        <i class="fas fa-user me-2"></i>
+                                        Profile
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="#" id="api-token-btn">
+                                        <i class="fas fa-key me-2"></i>
+                                        API Tokens
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" id="location-settings-btn" title="Configure GPS or fixed location sharing settings">
+                                        <i class="fas fa-map-marker-alt me-2"></i>
+                                        Location Settings
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" id="obs-settings-btn" title="Configure OBS WebSocket settings">
+                                        <i class="fas fa-broadcast-tower me-2"></i>
+                                        OBS Settings
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="POST" action="/auth/logout" class="d-inline">
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="fas fa-sign-out-alt me-2"></i>
+                                            Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    <% } else { %>
+                        <li class="nav-item">
+                            <a href="/auth/twitch" class="btn twitch-connect">
+                                <i class="fab fa-twitch twitch-icon"></i>
+                                Connect with Twitch
+                            </a>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Development Mode Banner -->
+    <% if (typeof user !== 'undefined' && user && user.username === 'devuser') { %>
+    <div class="alert alert-warning alert-dismissible fade show m-0 text-center" role="alert" style="border-radius: 0; border: none; background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%); margin-top: 56px !important;">
+        <div class="container">
+            <strong><i class="fas fa-exclamation-triangle me-2"></i>DEVELOPMENT MODE</strong>
+            Authentication is disabled for development. Do not use in production!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    <% } %>
+
+    <!-- Main Content -->
+    <main class="main-content" style="padding-top: 100px; min-height: 100vh;">
+        <!-- Floating Background Elements -->
+        <div class="floating-elements">
+            <div class="floating-element" style="left: 10%; animation-delay: 0s;"></div>
+            <div class="floating-element" style="left: 20%; animation-delay: 2s;"></div>
+            <div class="floating-element" style="left: 30%; animation-delay: 4s;"></div>
+            <div class="floating-element" style="left: 40%; animation-delay: 6s;"></div>
+            <div class="floating-element" style="left: 50%; animation-delay: 8s;"></div>
+            <div class="floating-element" style="left: 60%; animation-delay: 10s;"></div>
+            <div class="floating-element" style="left: 70%; animation-delay: 12s;"></div>
+            <div class="floating-element" style="left: 80%; animation-delay: 14s;"></div>
+            <div class="floating-element" style="left: 90%; animation-delay: 16s;"></div>
+        </div>
+        
+        <!-- Flash Messages -->
+        <div id="flash-messages" class="container mb-4"></div>
+        
+        <!-- Page Content -->
+        <%- body %>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-md-6">
+                    <p class="text-purple mb-2">
+                        <i class="fas fa-broadcast-tower me-2"></i>
+                        PulseRelay
+                    </p>
+                    <p class="footer-text mb-3">&copy; 2025 - 2026 PulseRelay. Built for streamers, by streamers.</p>
+                    <p class="footer-text mb-0">
+                        <a href="https://github.com/brocosoup/PulseRelay" class="footer-text text-decoration-none" target="_blank">
+                            <i class="fab fa-github me-1"></i>GitHub
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Leaflet Maps -->
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" 
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+            crossorigin=""></script>
+    
+    <!-- FLV.js for video playback -->
+    <script src="https://cdn.jsdelivr.net/npm/flv.js@1.6.2/dist/flv.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="/js/app.js"></script>
+    <script src="/js/toast.js"></script>
+    <script src="/js/layout.js"></script>
+    
+    <!-- User data as data attribute (CSP-compliant) -->
+    <% if (typeof user !== 'undefined' && user) { %>
+    <div id="user-data" style="display: none;" data-user='<%- JSON.stringify({
+        id: user.id,
+        username: user.username,
+        display_name: user.displayName || user.display_name || '',
+        email: user.email || '',
+        profile_image_url: user.profileImageUrl || user.profile_image_url || '',
+        twitch_id: user.twitchId || user.twitch_id || '',
+        created_at: user.createdAt || user.created_at || '',
+        updated_at: user.updatedAt || user.updated_at || ''
+    }) %>'></div>
+    <% } %>
+    
+    <!-- Page-specific scripts -->
+    <% if (typeof scripts !== 'undefined') { %>
+        <% scripts.forEach(script => { %>
+            <script src="<%= script %>"></script>
+        <% }); %>
+    <% } %>
+</body>
+</html>

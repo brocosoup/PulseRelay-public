@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Background Circle -->
+    <path
+        android:fillColor="@color/twitch_purple"
+        android:pathData="M54,54m-40,0a40,40 0,1,1 80,0a40,40 0,1,1 -80,0"/>
+    
+    <!-- Satellite Dish Base/Pole -->
+    <path
+        android:fillColor="@color/text_accent"
+        android:pathData="M52,75 L56,75 L56,60 L52,60 Z"/>
+    
+    <!-- Satellite Dish (Parabolic shape) -->
+    <path
+        android:fillColor="@color/text_accent"
+        android:pathData="M38,50 Q38,42 46,38 Q54,35 62,38 Q70,42 70,50 L66,52 Q66,46 60,43 Q54,41 48,43 Q42,46 42,52 Z"/>
+    
+    <!-- Dish Rim (outline) -->
+    <path
+        android:strokeColor="@color/twitch_purple_dark"
+        android:strokeWidth="1.5"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M38,50 Q38,42 46,38 Q54,35 62,38 Q70,42 70,50"/>
+    
+    <!-- LNB Feed (the receiver at the focal point) -->
+    <path
+        android:fillColor="@color/twitch_purple_light"
+        android:pathData="M52,48 L56,48 L56,54 L52,54 Z"/>
+    
+    <path
+        android:fillColor="@color/text_accent"
+        android:pathData="M54,54m-2,0a2,2 0,1,1 4,0a2,2 0,1,1 -4,0"/>
+    
+    <!-- Support arm from dish to LNB -->
+    <path
+        android:strokeColor="@color/text_accent"
+        android:strokeWidth="1.5"
+        android:pathData="M42,50 L52,52 M66,50 L56,52"/>
+    
+    <!-- Signal waves emanating from dish -->
+    <path
+        android:strokeColor="@color/success_color"
+        android:strokeWidth="2"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M32,45 Q32,35 42,30"
+        android:strokeAlpha="0.6"/>
+    
+    <path
+        android:strokeColor="@color/success_color"
+        android:strokeWidth="2"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M28,42 Q28,28 44,22"
+        android:strokeAlpha="0.4"/>
+    
+    <path
+        android:strokeColor="@color/success_color"
+        android:strokeWidth="2"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M76,45 Q76,35 66,30"
+        android:strokeAlpha="0.6"/>
+    
+    <path
+        android:strokeColor="@color/success_color"
+        android:strokeWidth="2"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M80,42 Q80,28 64,22"
+        android:strokeAlpha="0.4"/>
+</vector>

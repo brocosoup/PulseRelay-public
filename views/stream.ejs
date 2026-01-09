@@ -1,0 +1,156 @@
+<!-- Test Pattern Management Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">
+        <i class="fas fa-test-tube me-2"></i>
+        Test Pattern Configuration
+    </h1>
+    <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center">
+            <button class="btn btn-sm btn-outline-secondary me-2" id="manual-refresh-btn" title="Refresh now">
+                <i class="fas fa-sync-alt" id="refresh-icon"></i>
+            </button>
+            <small class="text-muted">
+                <i class="fas fa-clock me-1"></i>
+                <span id="refresh-countdown">10</span>s
+            </small>
+        </div>
+        <span id="stream-status-badge" class="badge <%= isLive ? 'bg-success' : 'bg-secondary' %>">
+            <i class="fas fa-circle me-1"></i>
+            <%= isLive ? 'LIVE' : 'OFFLINE' %>
+        </span>
+        <span id="test-pattern-badge" class="badge <%= isTestPatternRunning ? 'bg-warning' : 'bg-secondary' %>">
+            <i class="fas fa-test-tube me-1"></i>
+            <%= isTestPatternRunning ? 'TEST PATTERN' : 'NO PATTERN' %>
+        </span>
+    </div>
+</div>
+
+<!-- Test Pattern Configuration -->
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-cog me-2"></i>
+                    Test Pattern Settings
+                </h5>
+            </div>
+            <div class="card-body">
+                <form id="test-pattern-form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="pattern-type" class="form-label">Pattern Type</label>
+                                <select class="form-select" id="pattern-type">
+                                    <option value="colorbars">Color Bars</option>
+                                    <option value="checkerboard">Checkerboard</option>
+                                    <option value="gradient">Gradient</option>
+                                    <option value="noise">Noise</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="pattern-resolution" class="form-label">Resolution</label>
+                                <select class="form-select" id="pattern-resolution">
+                                    <option value="1920x1080">1920x1080 (1080p)</option>
+                                    <option value="1280x720">1280x720 (720p)</option>
+                                    <option value="854x480">854x480 (480p)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="pattern-fps" class="form-label">Frame Rate</label>
+                                <select class="form-select" id="pattern-fps">
+                                    <option value="30">30 FPS</option>
+                                    <option value="60">60 FPS</option>
+                                    <option value="25">25 FPS</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="pattern-bitrate" class="form-label">Video Bitrate (kbps)</label>
+                                <input type="number" class="form-control" id="pattern-bitrate" value="2000" min="500" max="10000" step="100">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="pattern-audio-bitrate" class="form-label">Audio Bitrate (kbps)</label>
+                                <select class="form-select" id="pattern-audio-bitrate">
+                                    <option value="128">128 kbps</option>
+                                    <option value="96">96 kbps</option>
+                                    <option value="64">64 kbps</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="pattern-text" class="form-label">Overlay Text</label>
+                                <input type="text" class="form-control" id="pattern-text" placeholder="PulseRelay Test Pattern" maxlength="100">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>
+                            Save Settings
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" id="load-defaults-btn">
+                            <i class="fas fa-undo me-1"></i>
+                            Load Defaults
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Current Status & Controls -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-play-circle me-2"></i>
+                    Current Status
+                </h5>
+            </div>
+            <div class="card-body">
+                <div id="current-status" class="mb-3">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="modern-status-indicator offline me-3" id="status-indicator">
+                            <div class="status-dot"></div>
+                            <div class="status-pulse"></div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span id="status-text" class="fw-medium d-block">Loading...</span>
+                            <small class="text-muted" id="status-description">Checking stream status...</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="current-settings" class="mb-3" style="display: none;">
+                    <h6 class="text-muted mb-2">Active Settings:</h6>
+                    <div class="small">
+                        <div>Resolution: <span id="active-resolution">-</span></div>
+                        <div>Bitrate: <span id="active-bitrate">-</span></div>
+                        <div>FPS: <span id="active-fps">-</span></div>
+                        <div>Pattern: <span id="active-pattern">-</span></div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button class="btn btn-success" id="start-test-pattern-btn">
+                        <i class="fas fa-play me-1"></i>
+                        Start Test Pattern
+                    </button>
+                    <button class="btn btn-danger" id="stop-test-pattern-btn">
+                        <i class="fas fa-stop me-1"></i>
+                        Stop Test Pattern
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Publisher Settings Preview -->
+    </div>
+</div>

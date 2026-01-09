@@ -1,0 +1,11 @@
+{
+  "allowedUsers": [
+    "your_twitch_username",
+    "another_allowed_user",
+    "friend_username"
+  ],
+  "security": {
+    "whitelistEnabled": true,
+    "logRejectedAttempts": true
+  }
+}

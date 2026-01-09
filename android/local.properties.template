@@ -1,0 +1,11 @@
+## This file must *NOT* be checked into Version Control Systems,
+# as it contains information specific to your local configuration.
+#
+# Location of the Android SDK. For Windows: use forward slashes.
+# Example: sdk.dir=C:/Users/YourName/AppData/Local/Android/Sdk
+sdk.dir=YOUR_ANDROID_SDK_PATH_HERE
+
+# Google Maps API Key (required for map picker feature)
+# Get your key from: https://console.cloud.google.com/apis/credentials
+# Restrict it to: Google Maps SDK for Android
+MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY_HERE

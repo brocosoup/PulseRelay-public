@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_add_button"
+        android:title="Add Button"
+        android:icon="@android:drawable/ic_menu_add" />
+    <item
+        android:id="@+id/menu_create_category"
+        android:title="Create Category"
+        android:icon="@android:drawable/ic_input_add" />
+    <item
+        android:id="@+id/menu_sort_categories"
+        android:title="Sort Categories"
+        android:icon="@android:drawable/ic_menu_sort_by_size" />
+</menu>

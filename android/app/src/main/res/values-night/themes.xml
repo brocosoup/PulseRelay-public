@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- PulseRelay Dark Theme is the default, so night theme is the same -->
+    <style name="Theme.PulseRelay" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color - Twitch Purple -->
+        <item name="colorPrimary">@color/twitch_purple</item>
+        <item name="colorPrimaryVariant">@color/twitch_purple_dark</item>
+        <item name="colorOnPrimary">@color/text_accent</item>
+        
+        <!-- Secondary brand color -->
+        <item name="colorSecondary">@color/twitch_purple_light</item>
+        <item name="colorSecondaryVariant">@color/twitch_purple_hover</item>
+        <item name="colorOnSecondary">@color/text_accent</item>
+        
+        <!-- Background colors -->
+        <item name="android:colorBackground">@color/bg_primary</item>
+        <item name="colorSurface">@color/bg_secondary</item>
+        <item name="colorOnBackground">@color/text_primary</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        
+        <!-- Status bar & navigation bar -->
+        <item name="android:statusBarColor">@color/bg_primary</item>
+        <item name="android:navigationBarColor">@color/bg_secondary</item>
+        <item name="android:windowLightStatusBar">false</item>
+        
+        <!-- Text appearance -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/text_muted</item>
+        
+        <!-- Action Bar / App Bar -->
+        <item name="colorControlNormal">@color/text_secondary</item>
+        <item name="colorControlActivated">@color/twitch_purple</item>
+        <item name="colorControlHighlight">@color/twitch_purple_hover</item>
+        
+        <!-- Button styling -->
+        <item name="materialButtonStyle">@style/Widget.PulseRelay.Button</item>
+        <item name="switchStyle">@style/Widget.PulseRelay.Switch</item>
+        
+        <!-- Card styling -->
+        <item name="materialCardViewStyle">@style/Widget.PulseRelay.Card</item>
+        
+        <!-- Fonts -->
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+</resources>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Player Overlay</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    body {
+      background: #0e0e10;
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: visible;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    .player-container {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: row;
+      background: linear-gradient(135deg, #18181b 0%, #0e0e10 100%);
+      overflow: hidden;
+    }
+
+    /* Left Panel - Player Controls */
+    .player-panel {
+      flex: 0 0 320px;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      gap: 20px;
+      background: #18181b;
+      border-right: 1px solid rgba(145, 70, 255, 0.2);
+    }
+
+    /* Right Panel - Library/Playlist */
+    .library-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #0e0e10;
+      overflow: hidden;
+      min-width: 280px;
+    }
+
+    .album-cover {
+      display: none;
+    }
+
+    .album-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .album-cover i {
+      font-size: 80px;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .track-info {
+      text-align: center;
+      color: #efeff1;
+    }
+
+    .track-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-artist {
+      font-size: 16px;
+      color: #adadb8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .progress-bar-container {
+      background: rgba(255, 255, 255, 0.1);
+      height: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .progress-bar {
+      background: linear-gradient(90deg, #9146ff 0%, #a970ff 100%);
+      height: 100%;
+      border-radius: 4px;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    .time-display {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #adadb8;
+      margin-top: 8px;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .control-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: none;
+      color: #efeff1;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .control-btn:hover {
+      background: rgba(145, 70, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    .control-btn.active {
+      background: rgba(145, 70, 255, 0.6);
+      color: #ffffff;
+    }
+
+    .control-btn.play-pause {
+      width: 64px;
+      height: 64px;
+      background: #9146ff;
+      color: #ffffff;
+    }
+
+    .control-btn.play-pause:hover {
+      background: #a970ff;
+      transform: scale(1.05);
+    }
+
+    .control-btn i {
+      font-size: 20px;
+    }
+
+    .control-btn.play-pause i {
+      font-size: 28px;
+    }
+
+    .volume-control {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .volume-main {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .volume-control i {
+      font-size: 18px;
+      color: #adadb8;
+    }
+
+    .volume-slider {
+      flex: 1;
+      height: 6px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+      border-radius: 3px;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background: #9146ff;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+
+    .volume-slider::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      background: #9146ff;
+      cursor: pointer;
+      border-radius: 50%;
+      border: none;
+    }
+
+    .volume-presets {
+      display: flex;
+      flex-direction: row;
+      gap: 6px;
+    }
+
+    .preset-btn {
+      padding: 8px 0;
+      flex: 1;
+      background: rgba(145, 70, 255, 0.05);
+      border: 1px solid rgba(145, 70, 255, 0.2);
+      border-radius: 8px;
+      color: #9146ff;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .preset-btn:hover {
+      background: rgba(145, 70, 255, 0.15);
+      border-color: rgba(145, 70, 255, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: #adadb8;
+    }
+
+    .speed-slider {
+      flex: 1;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .speed-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #9146ff;
+      cursor: pointer;
+    }
+
+    .speed-slider::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #9146ff;
+      cursor: pointer;
+      border: none;
+    }
+
+    #speedValue {
+      min-width: 28px;
+      text-align: right;
+      font-weight: 500;
+      color: #9146ff;
+    }
+
+    .control-btn.stop-after {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #f13c20;
+    }
+
+    .control-btn.stop-after:hover {
+      background: rgba(241, 60, 32, 0.1);
+      border-color: rgba(241, 60, 32, 0.3);
+    }
+
+    .control-btn.stop-after.active {
+      background: rgba(241, 60, 32, 0.2);
+      border-color: #f13c20;
+      color: #ffffff;
+    }
+
+    /* Library Panel Styles */
+    .library-header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid rgba(145, 70, 255, 0.2);
+      background: #18181b;
+    }
+
+    .library-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #efeff1;
+      margin-bottom: 16px;
+    }
+
+    .library-header .btn {
+      background: rgba(145, 70, 255, 0.8);
+      border: 1px solid rgba(145, 70, 255, 0.5);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .library-header .btn:hover {
+      background: rgba(145, 70, 255, 1);
+      border-color: rgba(145, 70, 255, 0.8);
+      transform: translateY(-1px);
+    }
+
+    .library-header .btn i {
+      margin-right: 8px;
+    }
+
+    .view-toggle {
+      display: flex;
+      gap: 8px;
+    }
+
+    .view-toggle .btn {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #adadb8;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .view-toggle .btn.active {
+      background: rgba(145, 70, 255, 0.3);
+      border-color: #9146ff;
+      color: #ffffff;
+    }
+
+    .view-toggle .btn:hover {
+      background: rgba(145, 70, 255, 0.2);
+    }
+
+    .playlist {
+      flex: 1;
+      overflow-y: auto;
+      overflow-y: overlay; /* Use overlay scrollbar if supported */
+      padding: 16px;
+    }
+
+    .playlist-item {
+      padding: 12px 16px;
+      margin-bottom: 4px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid transparent;
+    }
+
+    .playlist-item:hover {
+      background: rgba(145, 70, 255, 0.15);
+      border-color: rgba(145, 70, 255, 0.3);
+      transform: translateX(4px);
+    }
+
+    .playlist-item.active {
+      background: rgba(145, 70, 255, 0.25);
+      border-color: #9146ff;
+      border-left: 4px solid #9146ff;
+    }
+
+    .playlist-item-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #efeff1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .playlist-item-artist {
+      font-size: 12px;
+      color: #adadb8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-remove,
+    .btn-add {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .btn-remove {
+      color: #f13c20;
+    }
+
+    .btn-remove:hover {
+      background: rgba(241, 60, 32, 0.2);
+    }
+
+    .btn-add {
+      color: #9146ff;
+      background: rgba(145, 70, 255, 0.1);
+      border: 1px solid rgba(145, 70, 255, 0.3);
+    }
+
+    .btn-add:hover {
+      background: rgba(145, 70, 255, 0.2);
+    }
+
+    .btn-add:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: rgba(145, 70, 255, 0.05);
+    }
+
+    /* Hide scrollbar completely */
+    .playlist::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .playlist {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+
+    .form-control {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #efeff1;
+      font-size: 13px;
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+
+    .form-control::placeholder {
+      color: #6c6c75;
+    }
+
+    .form-control:focus {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: #9146ff;
+      color: #efeff1;
+      box-shadow: 0 0 0 3px rgba(145, 70, 255, 0.1);
+      outline: none;
+    }
+
+    .input-group-sm .btn {
+      padding: 8px 16px;
+      background: #9146ff;
+      border: none;
+      color: #ffffff;
+      border-radius: 0 8px 8px 0;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .input-group-sm .btn:hover {
+      background: #a970ff;
+    }
+
+    /* Modal Dialog Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999999;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-overlay.active {
+      display: flex !important;
+    }
+
+    .custom-modal {
+      background: #18181b;
+      border-radius: 16px;
+      padding: 24px;
+      min-width: 400px;
+      max-width: 500px;
+      max-height: 80vh;
+      border: 1px solid rgba(145, 70, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      z-index: 1000000;
+      position: relative;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #efeff1;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: #adadb8;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #efeff1;
+    }
+
+    .modal-body {
+      margin-bottom: 20px;
+    }
+
+    .modal-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #efeff1;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .modal-input:focus {
+      outline: none;
+      border-color: #9146ff;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 3px rgba(145, 70, 255, 0.2);
+    }
+
+    .playlist-list {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 12px;
+    }
+
+    .playlist-list-item {
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+
+
+    .playlist-list-item-name {
+      font-size: 14px;
+      color: #efeff1;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .playlist-list-item-icons {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .playlist-list-item i {
+      color: #9146ff;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .playlist-list-item i:hover {
+      opacity: 0.7;
+    }
+
+    .playlist-list-item .bi-trash {
+      color: #ef4444;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .modal-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .modal-btn-primary {
+      background: #9146ff;
+      color: #ffffff;
+    }
+
+    .modal-btn-primary:hover {
+      background: #a970ff;
+    }
+
+    .modal-btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .modal-btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: #adadb8;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #efeff1;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="player-container">
+    <!-- Left Panel: Player Controls -->
+    <div class="player-panel">
+      <div class="album-cover" id="albumCover">
+        <i class="bi bi-music-note-beamed"></i>
+      </div>
+
+      <div class="track-info">
+        <div class="track-title" id="trackTitle">No Track Loaded</div>
+        <div class="track-artist" id="trackArtist">Select a track to play</div>
+      </div>
+
+      <div>
+        <div class="progress-bar-container" id="progressContainer">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="time-display">
+          <span id="currentTime">0:00</span>
+          <span id="totalTime">0:00</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="control-btn" id="prevBtn" title="Previous">
+          <i class="bi bi-skip-start-fill"></i>
+        </button>
+        <button class="control-btn play-pause" id="playPauseBtn" title="Play">
+          <i class="bi bi-play-fill"></i>
+        </button>
+        <button class="control-btn" id="nextBtn" title="Next">
+          <i class="bi bi-skip-end-fill"></i>
+        </button>
+        <button class="control-btn" id="shuffleBtn" title="Shuffle">
+          <i class="bi bi-shuffle"></i>
+        </button>
+        <button class="control-btn" id="loopBtn" title="Loop All">
+          <i class="bi bi-arrow-repeat"></i>
+        </button>
+        <button class="control-btn stop-after" id="stopAfterBtn" title="Stop After Current">
+          <i class="bi bi-stop-circle"></i>
+        </button>
+      </div>
+
+      <div class="volume-control">
+        <div class="volume-main">
+          <i class="bi bi-volume-up-fill"></i>
+          <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="70">
+        </div>
+        <div class="volume-presets">
+          <button class="preset-btn" data-volume="10">10%</button>
+          <button class="preset-btn" data-volume="25">25%</button>
+          <button class="preset-btn" data-volume="50">50%</button>
+          <button class="preset-btn" data-volume="75">75%</button>
+          <button class="preset-btn" data-volume="100">100%</button>
+        </div>
+        <div class="speed-control">
+          <span>Transition:</span>
+          <input type="range" class="speed-slider" id="speedSlider" min="2" max="10" value="2" step="0.5">
+          <span id="speedValue">2s</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel: Library/Playlist -->
+    <div class="library-panel">
+      <div class="library-header">
+        <div class="library-title">Playlist</div>
+        
+        <div style="display: flex; gap: 8px;">
+          <button class="btn" id="savePlaylistBtn" title="Save current playlist">
+            <i class="bi bi-save"></i> Save
+          </button>
+          <button class="btn" id="loadPlaylistBtn" title="Load saved playlist">
+            <i class="bi bi-folder2-open"></i> Load
+          </button>
+          <button class="btn" id="clearPlaylistBtn" title="Clear playlist">
+            <i class="bi bi-trash3-fill"></i> Clear
+          </button>
+          <button class="btn" id="browseFilesBtn">
+            <i class="bi bi-file-earmark-music"></i> Add Files
+          </button>
+        </div>
+      </div>
+
+      <div class="playlist" id="playlist">
+        <div style="padding: 40px 20px; text-align: center; color: #6c6c75;">
+          <i class="bi bi-music-note-beamed" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
+          <div style="font-size: 16px; font-weight: 500; margin-bottom: 8px; color: #adadb8;">No music loaded</div>
+          <div style="font-size: 13px;">Browse a folder or add files to get started</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden data for auth token -->
+  <div id="authData" data-token="<%= token %>" style="display: none;"></div>
+
+  <!-- Save Playlist Modal -->
+  <div class="modal-overlay" id="savePlaylistModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 999999;">
+    <div class="custom-modal" style="position: relative; z-index: 1000000;">
+      <div class="modal-header">
+        <div class="modal-title">Save Playlist</div>
+        <button class="modal-close" data-modal="savePlaylistModal">
+          <i class="bi bi-x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="modal-input" id="playlistNameInput" placeholder="Enter playlist name..." />
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn modal-btn-secondary" data-modal="savePlaylistModal">Cancel</button>
+        <button class="modal-btn modal-btn-primary" id="confirmSaveBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Playlist Modal -->
+  <div class="modal-overlay" id="loadPlaylistModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 999999;">
+    <div class="custom-modal" style="position: relative; z-index: 1000000;">
+      <div class="modal-header">
+        <div class="modal-title">Load Playlist</div>
+        <button class="modal-close" data-modal="loadPlaylistModal">
+          <i class="bi bi-x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="playlist-list" id="playlistList">
+          <div style="padding: 20px; text-align: center; color: #6c6c75;">Loading...</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn modal-btn-secondary" data-modal="loadPlaylistModal">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
+  <script src="/js/music-overlay.js"></script>
+</body>
+</html>

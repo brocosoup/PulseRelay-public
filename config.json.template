@@ -1,0 +1,74 @@
+{
+  "server": {
+    "port": 3000,
+    "host": "0.0.0.0",
+    "environment": "production"
+  },
+  "rtmp": {
+    "port": 1935,
+    "chunkSize": 60000,
+    "gop": 30,
+    "ping": 3,
+    "pingTimeout": 6,
+    "customServerUrl": "rtmp://relay.myservice.fr:1935/live",
+    "maxConnectionsPerIP": 10,
+    "connectionWindowMs": 60000
+  },
+  "httpStreaming": {
+    "port": 4000,
+    "customPlayerUrl": null
+  },
+  "database": {
+    "type": "sqlite",
+    "path": "./storage/database.sqlite"
+  },
+  "logging": {
+    "level": "info",
+    "file": "./logs/app.log",
+    "maxSize": "10m",
+    "maxFiles": 5
+  },
+  "testPattern": {
+    "enabled": true,
+    "preserveLastPublisherSettings": true,
+    "defaultSettings": {
+      "resolution": "1920x1080",
+      "fps": 30,
+      "bitrate": 2500,
+      "type": "colorbars",
+      "text": "PulseRelay Test Pattern"
+    }
+  },
+  "restreaming": {
+    "enabled": true,
+    "maxDestinations": 5,
+    "retryAttempts": 3,
+    "retryDelay": 5000
+  },
+  "security": {
+    "rateLimit": {
+      "windowMs": 900000,
+      "max": 100
+    },
+    "cors": {
+      "origin": ["https://yourdomain.com", "http://localhost:3000"],
+      "credentials": true
+    }
+  },
+  "features": {
+    "registration": true,
+    "guestAccess": false,
+    "recording": false,
+    "analytics": true
+  },
+  "openai": {
+    "enabled": true,
+    "model": "gpt-3.5-turbo",
+    "systemPrompt": "Tu es un assistant qui convertit les messages de chat Twitch en phrases naturelles en français pour la synthèse vocale. Crée une phrase complète qui mentionne qui a dit quelque chose et ce qu'il a dit. Utilise EXACTEMENT le nom d'utilisateur fourni sans ajouter 'le user', 'l'utilisateur', ou tout autre préfixe. Le nom d'utilisateur doit être utilisé tel quel. Si le message contient une mention @utilisateur, indique clairement que l'expéditeur répond ou parle à cette personne (par exemple: 'X répond à Y', 'X dit à Y'). Rends la phrase claire, prononçable et naturelle. Supprime les emojis excessifs, développe les abréviations et clarifie les phrases obscures. Garde le sens et le ton d'origine. Renvoie UNIQUEMENT la phrase finale à prononcer, rien d'autre. RÉPONDS TOUJOURS EN FRANÇAIS.",
+    "userPrompt": "Convertis ceci en une phrase naturelle en français pour TTS. Utilise le nom d'utilisateur EXACTEMENT comme fourni. Si le message contient @mention, indique que les deux utilisateurs se parlent. Nom d'utilisateur: {{username}}, Message: {{message}}"
+  },
+  "musicPlayer": {
+    "directory": "",
+    "audioOutput": "default"
+  }
+}

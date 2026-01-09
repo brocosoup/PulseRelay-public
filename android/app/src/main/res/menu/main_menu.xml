@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_dashboard"
+        android:title="Dashboard"
+        android:icon="@android:drawable/ic_menu_compass"
+        app:showAsAction="always"
+        android:iconTint="@color/twitch_purple"/>
+    <item
+        android:id="@+id/action_live_chat"
+        android:title="Live Chat"
+        android:icon="@android:drawable/ic_menu_send"
+        app:showAsAction="always"
+        android:iconTint="@color/info_color"/>
+    <item
+        android:id="@+id/action_video_player"
+        android:title="@string/video_player_title"
+        android:icon="@drawable/ic_video"
+        app:showAsAction="always"
+        android:iconTint="@color/twitch_purple"/>
+    <item
+        android:id="@+id/action_stream_deck"
+        android:title="Pulse Deck"
+        android:icon="@android:drawable/ic_menu_view"
+        app:showAsAction="always"
+        android:iconTint="@color/twitch_purple"/>
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/settings_title"
+        android:icon="@drawable/ic_settings"
+        app:showAsAction="always"
+        android:iconTint="@color/text_primary"/>
+</menu>

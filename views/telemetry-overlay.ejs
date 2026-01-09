@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telemetry Overlay</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: transparent; 
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .telemetry-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            gap: 30px;
+            padding: 40px;
+            z-index: 1000;
+        }
+        
+        .telemetry-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            width: 100%;
+        }
+        
+        .telemetry-card {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(145, 70, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            flex: 1;
+            max-width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        .telemetry-card.disabled {
+            opacity: 0.3;
+        }
+        
+        .telemetry-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .telemetry-value {
+            color: #ffffff;
+            font-size: 96px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        
+        .telemetry-unit {
+            color: rgba(145, 70, 255, 0.9);
+            font-size: 48px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .telemetry-subtext {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        
+        /* Speedometer specific styling */
+        .speedometer {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(145, 70, 255, 0.1) 100%);
+        }
+        
+        .speed-indicator {
+            display: flex;
+            align-items: baseline;
+        }
+        
+        /* Altitude specific styling */
+        .altitude {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(70, 145, 255, 0.1) 100%);
+        }
+        
+        /* Distance specific styling */
+        .distance {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(70, 255, 145, 0.1) 100%);
+        }
+        
+        /* Signal bars styling */
+        .signal-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 8px;
+            height: 120px;
+            padding: 20px 0;
+        }
+        
+        .signal-bars .bar {
+            width: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+        
+        .signal-bars .bar:nth-child(1) { height: 20%; }
+        .signal-bars .bar:nth-child(2) { height: 40%; }
+        .signal-bars .bar:nth-child(3) { height: 60%; }
+        .signal-bars .bar:nth-child(4) { height: 80%; }
+        .signal-bars .bar:nth-child(5) { height: 100%; }
+        
+        .signal-bars .bar.active {
+            background: linear-gradient(to top, #9146FF, #d946ff);
+            box-shadow: 0 0 10px rgba(145, 70, 255, 0.5);
+        }
+        
+        /* GPS Quality specific styling */
+        .gps-quality {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(255, 193, 7, 0.1) 100%);
+        }
+        
+        /* GSM Signal specific styling */
+        .gsm-signal {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(33, 150, 243, 0.1) 100%);
+        }
+        
+        /* Time display styling */
+        .time-display {
+            text-align: center;
+            margin-bottom: 20px;
+            transition: margin 0.3s ease;
+        }
+        
+        .time-display.centered {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin-bottom: 0;
+        }
+        
+        .time-display .date {
+            color: #ffffff;
+            font-size: 110px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 20px rgba(145, 70, 255, 0.5);
+            white-space: nowrap;
+        }
+        
+        .time-display.centered .date {
+            font-size: 72px;
+        }
+        
+        .time-display .time {
+            color: #ffffff;
+            font-size: 96px;
+            font-weight: 700;
+            letter-spacing: 8px;
+            text-shadow: 0 4px 20px rgba(145, 70, 255, 0.5);
+            white-space: nowrap;
+        }
+        
+        .status-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            z-index: 1000;
+        }
+        
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background: #4caf50;
+            animation: pulse-dot 2s infinite;
+        }
+        
+        .status-dot.stale {
+            background: #ff9800;
+        }
+        
+        .status-dot.error {
+            background: #f44336;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="telemetry-container">
+        <!-- Time Display -->
+        <div class="time-display">
+            <div class="date" id="dateDisplay">Loading...</div>
+            <div class="time" id="timeDisplay">--:--:--</div>
+        </div>
+        
+        <!-- Main Row: Speed, Altitude, Distance -->
+        <div class="telemetry-row">
+            <!-- Speedometer -->
+            <div class="telemetry-card speedometer" id="speedCard">
+                <div class="telemetry-label">Speed</div>
+                <div class="speed-indicator">
+                    <span class="telemetry-value" id="speedValue">--</span>
+                    <span class="telemetry-unit">km/h</span>
+                </div>
+                <div class="telemetry-subtext" id="speedMph">-- mph</div>
+            </div>
+            
+            <!-- Altitude -->
+            <div class="telemetry-card altitude" id="altitudeCard">
+                <div class="telemetry-label">Altitude</div>
+                <div class="speed-indicator">
+                    <span class="telemetry-value" id="altitudeValue">--</span>
+                    <span class="telemetry-unit">m</span>
+                </div>
+                <div class="telemetry-subtext" id="altitudeFeet">-- ft</div>
+            </div>
+            
+            <!-- Distance -->
+            <div class="telemetry-card distance" id="distanceCard">
+                <div class="telemetry-label">Distance</div>
+                <div class="speed-indicator">
+                    <span class="telemetry-value" id="distanceValue">0,00</span>
+                    <span class="telemetry-unit">km</span>
+                </div>
+                <div class="telemetry-subtext" id="distanceMiles">0.00 mi</div>
+            </div>
+        </div>
+        
+        <!-- Secondary Row: GPS Quality, GSM Signal -->
+        <div class="telemetry-row">
+            <!-- GPS Quality -->
+            <div class="telemetry-card gps-quality" id="gpsQualityCard">
+                <div class="telemetry-label">GPS Quality</div>
+                <div class="speed-indicator">
+                    <span class="telemetry-value" id="gpsQualityValue">--</span>
+                    <span class="telemetry-unit">%</span>
+                </div>
+                <div class="telemetry-subtext" id="gpsQualityStatus">No signal</div>
+            </div>
+            
+            <!-- GSM Signal -->
+            <div class="telemetry-card gsm-signal" id="gsmSignalCard">
+                <div class="telemetry-label">GSM Signal</div>
+                <div class="signal-bars" id="signalBars">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <div class="telemetry-subtext" id="gsmSignalStatus">No signal</div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="status" class="status-indicator">
+        <span class="status-dot"></span>
+        <span id="statusText">Loading...</span>
+    </div>
+    
+    <script src="/js/telemetry-overlay.js"></script>
+</body>
+</html>

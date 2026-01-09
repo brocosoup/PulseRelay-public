@@ -1,0 +1,53 @@
+# PulseRelay Docker Compose Configuration
+version: '3.8'
+
+services:
+  pulserelay:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: pulserelay:latest
+    container_name: pulserelay-app
+    restart: unless-stopped
+    
+    ports:
+      - "3000:3000"    # HTTP server
+      - "1935:1935"    # RTMP server
+      - "4000:4000"    # HTTP FLV streaming
+    
+    # No environment variables needed - using config.json
+    
+    volumes:
+      # Persist database and logs
+      - pulserelay_data:/app/data
+      - pulserelay_logs:/app/logs
+      # Mount config files (create them from templates if needed)
+      - ./config.json:/app/config.json:ro
+      - ./secret.json:/app/secret.json:ro
+      - pulserelay_storage:/app/storage
+      - pulserelay_uploads:/app/public/uploads
+    
+    networks:
+      - pulserelay-network
+    
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  pulserelay_data:
+    driver: local
+  pulserelay_logs:
+    driver: local
+  pulserelay_storage:
+    driver: local
+  pulserelay_uploads:
+    driver: local
+
+networks:
+  pulserelay-network:
+    driver: bridge

@@ -1,0 +1,1041 @@
+<div class="container">
+    <!-- Dashboard Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0">Dashboard</h1>
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center">
+                <button class="btn btn-sm btn-outline-secondary me-2" id="manual-refresh-btn" title="Refresh now">
+                    <i class="fas fa-sync-alt" id="refresh-icon"></i>
+                </button>
+                <small class="text-muted">
+                    <i class="fas fa-clock me-1"></i>
+                    <span id="refresh-countdown">10</span>s
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row mb-3">
+        <div class="col-md-2 col-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-video text-primary"></i>
+                    <h5 class="card-title mb-0" id="active-streams">0</h5>
+                    <small>Active Streams</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-2 col-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-eye text-success"></i>
+                    <h5 class="card-title mb-0" id="total-viewers">0</h5>
+                    <small>Viewers</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-2 col-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-share-alt text-info"></i>
+                    <h5 class="card-title mb-0" id="destinations">0</h5>
+                    <small>Destinations</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-2 col-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-clock text-warning"></i>
+                    <h5 class="card-title mb-0" id="uptime">0h 0m</h5>
+                    <small>Uptime</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-2 col-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-map-marker-alt text-info"></i>
+                    <h5 class="card-title mb-0" id="location-status">
+                        <span id="location-enabled-indicator" class="badge bg-secondary">Disabled</span>
+                    </h5>
+                    <small>Location</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bitrate Overview Section (only visible when streaming) -->
+    <div class="row mb-3" id="bitrate-overview" style="display: none;">
+        <div class="col-12 mb-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="text-muted mb-0">
+                    <i class="fas fa-tachometer-alt me-2"></i>Stream Performance
+                </h6>
+                <div class="d-flex align-items-center">
+                    <span id="bitrate-quality-badge" class="badge bg-secondary ms-2" title="Production target: 3-12 Mbps">
+                        No stream
+                    </span>
+                </div>
+            </div>
+            <!-- Quality Progress Bar -->
+            <div class="mt-2">
+                <div class="progress" style="height: 6px;">
+                    <div class="progress-bar bg-secondary" 
+                         id="bitrate-quality-progress" 
+                         role="progressbar" 
+                         style="width: 0%" 
+                         aria-valuenow="0" 
+                         aria-valuemin="0" 
+                         aria-valuemax="100"
+                         title="Quality indicator based on production targets">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between mt-1">
+                    <small class="text-muted">0 Mbps</small>
+                    <small class="text-muted">Target: 3-12 Mbps</small>
+                    <small class="text-muted">15+ Mbps</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 col-md-4">
+            <div class="card border-primary h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-wifi text-primary mb-2"></i>
+                    <h5 class="card-title mb-0" id="current-bitrate">0 kbps</h5>
+                    <small class="text-muted">Current Bitrate</small>
+                    <div class="mt-1">
+                        <span class="badge bg-light text-dark" title="Real-time streaming bitrate">Live</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-4 col-md-4">
+            <div class="card border-info h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line text-info mb-2"></i>
+                    <h5 class="card-title mb-0" id="average-bitrate">0 kbps</h5>
+                    <small class="text-muted">Session Average</small>
+                    <div class="mt-1">
+                        <span class="badge bg-light text-dark" title="Average bitrate for current session">Avg</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-4 col-md-4">
+            <div class="card border-success h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-arrow-up text-success mb-2"></i>
+                    <h5 class="card-title mb-0" id="peak-bitrate">0 kbps</h5>
+                    <small class="text-muted">Peak Bitrate</small>
+                    <div class="mt-1">
+                        <span class="badge bg-light text-dark" title="Highest bitrate achieved this session">Peak</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stream Keys Section -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-key me-1"></i> Stream Keys</h5>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-sm btn-outline-success" id="add-stream-key-btn">
+                            <i class="fas fa-plus me-1"></i>
+                            Add Key
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Stream Keys List -->
+                    <div id="stream-keys-container">
+                        <% if (streamKeys && streamKeys.length > 0) { %>
+                            <% streamKeys.forEach((key, index) => { %>
+                                <div class="stream-key-item card mb-3" data-key-id="<%= key.id %>" 
+                                     data-obs-source-name="<%= key.obsSourceName || '' %>"
+                                     data-connect-message="<%= key.connectMessage || '' %>"
+                                     data-disconnect-message="<%= key.disconnectMessage || '' %>">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1">
+                                                    <%= key.description || `Stream Key #${index + 1}` %>
+                                                    <% if (key.isActive) { %>
+                                                        <span class="badge bg-success ms-2">Active</span>
+                                                    <% } else { %>
+                                                        <span class="badge bg-secondary ms-2">Inactive</span>
+                                                    <% } %>
+                                                </h6>
+                                                <small class="text-muted">
+                                                    Created: <%= new Date(key.createdAt).toLocaleDateString() %>
+                                                    <% if (key.lastUsedAt) { %>
+                                                        | Last used: <%= new Date(key.lastUsedAt).toLocaleDateString() %>
+                                                    <% } %>
+                                                </small>
+                                            </div>
+                                            <div class="btn-group" role="group">
+                                                <button class="btn btn-sm btn-outline-primary watch-stream-btn" 
+                                                        data-stream-key="<%= key.fullStreamKey %>" 
+                                                        title="Watch Stream">
+                                                    <i class="fas fa-play"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary edit-key-btn" 
+                                                        data-key-id="<%= key.id %>" 
+                                                        title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <% if (key.isActive) { %>
+                                                    <button class="btn btn-sm btn-outline-warning deactivate-key-btn" 
+                                                            data-key-id="<%= key.id %>" 
+                                                            title="Deactivate">
+                                                        <i class="fas fa-pause"></i>
+                                                    </button>
+                                                <% } else { %>
+                                                    <button class="btn btn-sm btn-outline-success activate-key-btn" 
+                                                            data-key-id="<%= key.id %>" 
+                                                            title="Activate">
+                                                        <i class="fas fa-play"></i>
+                                                    </button>
+                                                <% } %>
+                                                <button class="btn btn-sm btn-outline-danger delete-key-btn" 
+                                                        data-key-id="<%= key.id %>" 
+                                                        title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Stream Key</label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control font-monospace stream-key-input" 
+                                                       readonly value="<%= key.streamKey %>" 
+                                                       id="stream-key-<%= key.id %>"
+                                                       data-full-key="<%= key.fullStreamKey %>">
+                                                <button class="btn btn-outline-secondary toggle-key-visibility" type="button" 
+                                                        data-key-id="<%= key.id %>" title="Show stream key">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-outline-secondary copy-btn" type="button" 
+                                                        data-target="stream-key-<%= key.id %>" 
+                                                        data-copy-full-key="true"
+                                                        title="Copy stream key">
+                                                    <i class="fas fa-copy"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        <% } else { %>
+                            <div class="text-center text-muted py-4" id="no-keys-message">
+                                <i class="fas fa-key fa-3x mb-3"></i>
+                                <p>No stream keys found. Create your first stream key to get started.</p>
+                            </div>
+                        <% } %>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <h6 class="mb-2 fw-bold">Server URL</h6>
+                        <div class="input-group">
+                            <input type="text" class="form-control font-monospace" id="rtmp-server" value="<%= rtmpUrl || 'rtmp://localhost:1935/live' %>" readonly>
+                            <button class="btn btn-outline-secondary copy-btn" type="button" data-target="rtmp-server" title="Copy server URL">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Connection Status Section -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card" id="connection-card" style="display: none;">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-network-wired me-1"></i> Connection Status</h5>
+                    <small class="text-muted">Real-time connection monitoring</small>
+                </div>
+                <div class="card-body">
+                    <div id="connection-status">
+                        <div class="text-center text-muted">
+                            <i class="fas fa-spinner fa-spin me-2"></i>
+                            Loading connection status...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions and Activity -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">OBS Overlays</h5>
+                </div>
+                <div class="card-body">
+                    <!-- OBS Overlay URLs -->
+                    <div id="obs-overlay-section">
+                        <h6 class="fw-bold mb-2">
+                            <i class="fas fa-video me-2"></i>OBS Browser Source URLs
+                        </h6>
+                        <div class="mb-2">
+                            <label class="form-label small text-muted mb-1">Location Map Overlay</label>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control font-monospace" id="map-overlay-url" 
+                                       value="<%= serverUrl %>/map-overlay" readonly>
+                                <button class="btn btn-outline-secondary copy-btn" type="button" 
+                                        data-target="map-overlay-url" title="Copy overlay URL">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small text-muted mb-1">Telemetry Overlay (Speed, Altitude, Distance)</label>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control font-monospace" id="telemetry-overlay-url" 
+                                       value="<%= serverUrl %>/telemetry-overlay" readonly>
+                                <button class="btn btn-outline-secondary copy-btn" type="button" 
+                                        data-target="telemetry-overlay-url" title="Copy overlay URL">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small text-muted mb-1">Media Overlay</label>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control font-monospace" id="picture-overlay-url" 
+                                       value="<%= serverUrl %>/picture-overlay" readonly>
+                                <button class="btn btn-outline-secondary copy-btn" type="button" 
+                                        data-target="picture-overlay-url" title="Copy overlay URL">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small text-muted mb-1">Stream Status Overlay</label>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control font-monospace" id="stream-status-overlay-url" 
+                                       value="<%= serverUrl %>/stream-status-overlay" readonly>
+                                <button class="btn btn-outline-secondary copy-btn" type="button" 
+                                        data-target="stream-status-overlay-url" title="Copy overlay URL">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small text-muted mb-1">Now Playing Overlay</label>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control font-monospace" id="now-playing-overlay-url" 
+                                       value="<%= serverUrl %>/now-playing-overlay" readonly>
+                                <button class="btn btn-outline-secondary copy-btn" type="button" 
+                                        data-target="now-playing-overlay-url" title="Copy overlay URL">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Live Streams</h5>
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-secondary" id="refresh-live-streams-btn" title="Refresh live streams">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div id="live-streams-list" class="streams-container" style="max-height: 300px; overflow-y: auto; padding: 1rem;">
+                        <div class="text-center text-muted py-3">
+                            <i class="fas fa-broadcast-tower"></i>
+                            <div>No Live Streams</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Location Map Section -->
+    <div class="row mb-3" id="location-map-section" style="display: none;">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-map-marker-alt me-2"></i>Current Location
+                    </h5>
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-primary" id="center-map-btn" title="Center map on current location">
+                            <i class="fas fa-crosshairs"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" id="refresh-location-btn" title="Refresh location">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div id="dashboard-map" style="height: 300px; width: 100%;"></div>
+                </div>
+                <div class="card-footer">
+                    <div class="row text-center">
+                        <div class="col-md-3">
+                            <div class="text-muted small">Coordinates</div>
+                            <div class="fw-bold" id="map-coordinates">--</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-muted small">Accuracy</div>
+                            <div class="fw-bold" id="map-accuracy">--</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-muted small">Last Updated</div>
+                            <div class="fw-bold" id="map-timestamp">--</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-muted small">Status</div>
+                            <div class="fw-bold" id="map-status">Disabled</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<style>
+/* Legacy status indicator for other parts */
+.status-indicator {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+    }
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.card {
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.progress {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.font-monospace {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+.btn:focus {
+    box-shadow: 0 0 0 0.2rem rgba(145, 70, 255, 0.25);
+}
+
+.alert {
+    border: none;
+    border-radius: 8px;
+}
+
+.form-control:focus {
+    border-color: #9146ff;
+    box-shadow: 0 0 0 0.2rem rgba(145, 70, 255, 0.25);
+}
+
+#flash-messages {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 1050;
+    max-width: 400px;
+}
+
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Activity styling */
+.activity-container {
+    scrollbar-width: thin;
+    scrollbar-color: #6c757d transparent;
+}
+
+.activity-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.activity-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.activity-container::-webkit-scrollbar-thumb {
+    background-color: #6c757d;
+    border-radius: 3px;
+}
+
+.activity-item {
+    transition: all 0.2s ease;
+    border: 1px solid #e9ecef !important;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+}
+
+.activity-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    border-color: #9146ff !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+}
+
+.hover-lift {
+    transition: all 0.2s ease;
+}
+
+.activity-item:last-child {
+    margin-bottom: 0;
+}
+
+.text-xs {
+    font-size: 0.75rem;
+}
+
+code.small {
+    font-size: 0.75rem;
+    background-color: rgba(0,0,0,0.05);
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+}
+
+/* Stream key specific styles */
+.stream-key-item {
+    border-left: 4px solid #28a745;
+    transition: all 0.2s ease-in-out;
+}
+
+.stream-key-item:hover {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stream-key-item[data-inactive="true"] {
+    border-left-color: #6c757d;
+    opacity: 0.8;
+}
+
+.stream-key-input {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+}
+</style>
+
+<!-- Stream Key Modal -->
+<div class="modal fade" id="streamKeyModal" tabindex="-1" aria-labelledby="streamKeyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="streamKeyModalLabel">Add Stream Key</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="streamKeyForm">
+                    <div class="mb-3">
+                        <label for="keyDescription" class="form-label">Description <small class="text-muted">(optional)</small></label>
+                        <input type="text" class="form-control" id="keyDescription" 
+                               placeholder="e.g., Main streaming setup, OBS Studio, etc.">
+                        <div class="form-text">Give this stream key a meaningful name to help you identify it later.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="keyObsSourceName" class="form-label">OBS Source Name <small class="text-muted">(optional)</small></label>
+                        <input type="text" class="form-control" id="keyObsSourceName" 
+                               placeholder="e.g., Camera 1, Front Cam, etc.">
+                        <div class="form-text">Enter the exact source name from OBS to track visibility in the stream status overlay.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="keyConnectMessage" class="form-label">Connect Message <small class="text-muted">(optional)</small></label>
+                        <input type="text" class="form-control" id="keyConnectMessage" 
+                               placeholder="e.g., Stream is starting! Welcome everyone!" maxlength="500">
+                        <div class="form-text">Message to send in your Twitch chat when the stream starts.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="keyDisconnectMessage" class="form-label">Disconnect Message <small class="text-muted">(optional)</small></label>
+                        <input type="text" class="form-control" id="keyDisconnectMessage" 
+                               placeholder="e.g., Stream ended! Thanks for watching!" maxlength="500">
+                        <div class="form-text">Message to send in your Twitch chat when the stream disconnects. Use {reason} to include the disconnect reason (e.g., "connection lost", "low bitrate detected").</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveStreamKey">Create Stream Key</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Video Player Modal -->
+<div class="modal fade" id="videoPlayerModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-play-circle me-2"></i>
+                    Live Stream Player
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="position-relative bg-dark" style="aspect-ratio: 16/9;">
+                    <video id="streamPlayer" class="w-100 h-100" controls preload="none" style="background: #000;">
+                        <p class="text-white p-3">Your browser does not support video playback.</p>
+                    </video>
+                    <div id="playerLoadingOverlay" class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-75">
+                        <div class="text-center text-white">
+                            <div class="spinner-border text-primary mb-2" role="status"></div>
+                            <p class="mb-0">Loading stream...</p>
+                        </div>
+                    </div>
+                    <div id="playerErrorOverlay" class="position-absolute top-0 start-0 w-100 h-100 d-none align-items-center justify-content-center bg-dark bg-opacity-75">
+                        <div class="text-center text-white">
+                            <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                            <h5>Stream Unavailable</h5>
+                            <p class="mb-3" id="playerErrorMessage">The stream is not currently broadcasting.</p>
+                            <button class="btn btn-primary" id="retryStreamBtn">
+                                <i class="fas fa-redo me-2"></i>Retry
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div class="text-muted small">
+                        <i class="fas fa-signal me-1"></i>
+                        Stream URL: <span id="currentStreamUrl" class="font-monospace">-</span>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary me-2" id="toggleFullscreenBtn">
+                            <i class="fas fa-expand me-2"></i>Fullscreen
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- API Token Modal -->
+<div class="modal fade" id="apiTokenModal" tabindex="-1" aria-labelledby="apiTokenModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="apiTokenModalLabel">
+                    <i class="fas fa-key me-2"></i>API Tokens
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Mobile API Token Section -->
+                <h6 class="border-bottom pb-2 mb-3">
+                    <i class="fas fa-mobile-alt me-2"></i>Mobile App Token
+                </h6>
+
+                <div class="mb-4" id="mobileTokenDisplay" style="display: none;">
+                    <label class="form-label">Token</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control font-monospace" id="mobileApiTokenValue" readonly>
+                        <button class="btn btn-outline-secondary copy-btn" type="button" 
+                                data-target="mobileApiTokenValue" title="Copy token">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <div class="small text-muted mt-2">
+                        <i class="fas fa-clock me-1"></i>
+                        <span>Generated: <span id="mobileTokenGeneratedAt">-</span></span><br>
+                        <i class="fas fa-hourglass-end me-1"></i>
+                        <span>Expires: <span id="mobileTokenExpiresAt">-</span></span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-danger mt-2" id="revokeMobileTokenBtn">
+                        <i class="fas fa-trash me-1"></i>Revoke Mobile Token
+                    </button>
+                </div>
+
+                <div id="noMobileTokenMessage" class="mb-4">
+                    <p class="text-muted mb-0">No token</p>
+                </div>
+
+                <button type="button" class="btn btn-primary mb-4" id="generateMobileTokenBtn">
+                    <i class="fas fa-key me-2"></i>Generate
+                </button>
+
+                <!-- Android App Download Section -->
+                <% if (apkExists) { %>
+                <div class="alert alert-info mb-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <i class="fas fa-mobile-alt me-2"></i>
+                            <strong>Android App</strong>
+                            <p class="mb-0 mt-1 small">Download the PulseRelay mobile app to enable GPS tracking, telemetry, and picture uploads to your stream overlays.</p>
+                        </div>
+                        <a href="/download/app" class="btn btn-success btn-sm ms-3">
+                            <i class="fas fa-download me-1"></i>Download APK
+                        </a>
+                    </div>
+                </div>
+                <% } %>
+
+                <!-- Overlay Token Section -->
+                <h6 class="border-bottom pb-2 mb-3 mt-4">
+                    <i class="fas fa-tv me-2"></i>Overlay Token
+                </h6>
+
+                <div class="mb-3" id="overlayTokenDisplay" style="display: none;">
+                    <label class="form-label">Token</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control font-monospace" id="overlayTokenValue" readonly>
+                        <button class="btn btn-outline-secondary copy-btn" type="button" 
+                                data-target="overlayTokenValue" title="Copy token">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <div class="small text-muted mt-2">
+                        <i class="fas fa-clock me-1"></i>
+                        <span>Generated: <span id="overlayTokenGeneratedAt">-</span></span><br>
+                        <i class="fas fa-history me-1"></i>
+                        <span>Last Used: <span id="overlayTokenLastUsed">Never</span></span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-danger mt-2" id="revokeOverlayTokenBtn">
+                        <i class="fas fa-trash me-1"></i>Revoke Overlay Token
+                    </button>
+                </div>
+
+                <div id="noOverlayTokenMessage" class="mb-3">
+                    <p class="text-muted mb-0">No token</p>
+                </div>
+
+                <button type="button" class="btn btn-primary mb-3" id="generateOverlayTokenBtn">
+                    <i class="fas fa-key me-2"></i>Generate
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Location Settings Modal -->
+<!-- Settings separated: Location settings here, User settings in separate modal -->
+<div class="modal fade" id="locationSettingsModal" tabindex="-1" aria-labelledby="locationSettingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="locationSettingsModalLabel">
+                    <i class="fas fa-map-marker-alt me-2"></i>Location Settings
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info mb-3">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <small>To delete all location data (fixed location & history), disable location sharing and refresh this view.</small>
+                </div>
+
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="locationEnabled" name="enabled">
+                    <label class="form-check-label" for="locationEnabled">
+                        Enable location sharing (account-wide)
+                    </label>
+                </div>
+
+                <!-- Fixed Location Display -->
+                <div class="mb-3" id="fixedLocationDisplay">
+                    <h6 class="fw-bold">
+                        <i class="fas fa-map-pin me-2"></i>Fixed Location
+                    </h6>
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <small class="text-muted">Name:</small>
+                                    <div id="fixedLocationName" class="mb-2">-</div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                    <small class="text-muted">Latitude:</small>
+                                    <div id="fixedLocationLat">-</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <small class="text-muted">Longitude:</small>
+                                    <div id="fixedLocationLng">-</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location Data Table -->
+                <div class="mt-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="fw-bold mb-0">
+                            <i class="fas fa-database me-2"></i>Location History
+                        </h6>
+                        <button class="btn btn-sm btn-outline-primary" id="refreshLocationDataBtn">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                        <table class="table table-sm table-striped table-hover">
+                            <thead class="table-dark sticky-top">
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Latitude</th>
+                                    <th>Longitude</th>
+                                    <th>Accuracy</th>
+                                    <th>Speed</th>
+                                    <th>Altitude</th>
+                                </tr>
+                            </thead>
+                            <tbody id="locationDataTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">
+                                        <i class="fas fa-spinner fa-spin me-2"></i>Loading...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- OBS Settings Modal -->
+<div class="modal fade" id="obsSettingsModal" tabindex="-1" aria-labelledby="obsSettingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="obsSettingsModalLabel">
+                    <i class="fas fa-broadcast-tower me-2"></i>OBS WebSocket Settings
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="obsWebsocketPassword" class="form-label">
+                        <i class="fas fa-lock me-1"></i>WebSocket Password
+                    </label>
+                    <input type="password" class="form-control" id="obsWebsocketPassword" 
+                           placeholder="Enter your OBS WebSocket password">
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="showObsPassword">
+                    <label class="form-check-label" for="showObsPassword">
+                        Show password
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveObsSettings">
+                    <i class="fas fa-save me-2"></i>Save Password
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Profile Settings Modal -->
+<div class="modal fade" id="userProfileModal" tabindex="-1" aria-labelledby="userProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userProfileModalLabel">
+                    <i class="fas fa-user me-2"></i>User Profile
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Profile Header -->
+                <div class="text-center mb-4">
+                    <div class="profile-avatar mb-3">
+                        <% if (user && user.profile_image_url) { %>
+                            <img src="<%= user.profile_image_url %>" alt="<%= user.display_name || user.username %>" 
+                                 class="rounded-circle" 
+                                 style="width: 120px; height: 120px; border: 3px solid #9146ff;">
+                        <% } else { %>
+                            <i class="fas fa-user-circle" style="font-size: 120px; color: #9146ff;"></i>
+                        <% } %>
+                    </div>
+                    <h4 class="text-purple mb-1"><%= user ? (user.display_name || user.username) : 'User' %></h4>
+                    <p class="text-muted">@<%= user ? user.username : 'username' %></p>
+                </div>
+
+                <!-- Account Information -->
+                <h6 class="text-muted mb-3"><i class="fas fa-info-circle me-2"></i>Account Information</h6>
+                <table class="table table-sm">
+                    <tbody>
+                        <tr>
+                            <td><strong>User ID:</strong></td>
+                            <td><%= user ? user.id : 'N/A' %></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Twitch ID:</strong></td>
+                            <td><%= user ? user.twitch_id : 'N/A' %></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Email:</strong></td>
+                            <td><%= user ? (user.email || 'Not provided') : 'N/A' %></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Member Since:</strong></td>
+                            <td id="profile-created-at"><%= user ? user.created_at : 'N/A' %></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Last Active:</strong></td>
+                            <td id="profile-updated-at"><%= user ? user.updated_at : 'N/A' %></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <hr class="my-4">
+
+                <!-- Text-to-Speech Settings -->
+                <h6 class="text-muted mb-3"><i class="fas fa-volume-up me-2"></i>Text-to-Speech</h6>
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="ttsOpenaiEnabled" name="ttsOpenaiEnabled">
+                    <label class="form-check-label" for="ttsOpenaiEnabled">
+                        Enable OpenAI TTS Processing
+                    </label>
+                    <div class="form-text">
+                        Process Twitch chat messages with AI for natural text-to-speech output on Android app
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- Additional Channels -->
+                <h6 class="text-muted mb-3"><i class="fas fa-users me-2"></i>Additional Channels</h6>
+                <p class="small text-muted mb-2">Join other Twitch channels to monitor their chat (in addition to your own channel)</p>
+                <div class="mb-3">
+                    <div id="channelsList" class="mb-2"></div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="newChannelInput" placeholder="Enter channel name (e.g., elbe_poly)">
+                        <button class="btn btn-purple" type="button" id="addChannelBtn">
+                            <i class="fas fa-plus me-1"></i>Add Channel
+                        </button>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- Danger Zone -->
+                <div class="card border-danger">
+                    <div class="card-header bg-danger text-white">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Danger Zone
+                    </div>
+                    <div class="card-body">
+                        <h6 class="text-danger">Delete Account</h6>
+                        <p class="mb-2">Once you delete your account, there is no going back. This will permanently delete:</p>
+                        <ul class="small text-muted mb-3">
+                            <li>All your stream keys and RTMP destinations</li>
+                            <li>Location data and tracking history</li>
+                            <li>Uploaded pictures and media files</li>
+                            <li>API tokens (mobile and overlay)</li>
+                            <li>Stream statistics and session data</li>
+                        </ul>
+                        <button type="button" class="btn btn-danger" id="deleteAccountBtn">
+                            <i class="fas fa-trash-alt me-2"></i>Delete My Account
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveUserSettings">
+                    <i class="fas fa-save me-2"></i>Save Settings
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Account Confirmation Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark border-danger">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteAccountModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Delete Account
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger">
+                    <strong>⚠️ WARNING: This action is PERMANENT and IRREVERSIBLE!</strong>
+                </div>
+                
+                <p class="mb-3">All your data will be permanently deleted, including:</p>
+                <ul class="text-muted mb-4">
+                    <li>Stream keys and RTMP destinations</li>
+                    <li>Location data and tracking history</li>
+                    <li>Pictures and media files</li>
+                    <li>API tokens (mobile and overlay)</li>
+                    <li>Stream statistics and session data</li>
+                </ul>
+                
+                <p class="mb-2"><strong>To confirm deletion, type <code class="text-danger">DELETE</code> below:</strong></p>
+                <input type="text" class="form-control" id="deleteConfirmInput" placeholder="Type DELETE here" autocomplete="off">
+                <small class="text-muted">Case sensitive - must be all capitals</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn" disabled>
+                    <i class="fas fa-trash-alt me-2"></i>Delete My Account
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

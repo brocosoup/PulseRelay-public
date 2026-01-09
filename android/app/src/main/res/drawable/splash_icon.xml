@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    
+    <!-- Satellite Dish Base/Pole -->
+    <path
+        android:fillColor="@color/text_accent"
+        android:pathData="M95,170 L105,170 L105,120 L95,120 Z"/>
+    
+    <!-- Ground base -->
+    <path
+        android:fillColor="@color/text_accent"
+        android:pathData="M85,170 L115,170 L110,180 L90,180 Z"/>
+    
+    <!-- Satellite Dish (Parabolic shape) -->
+    <path
+        android:fillColor="@color/text_accent"
+        android:pathData="M60,90 Q60,65 80,50 Q100,40 120,50 Q140,65 140,90 L130,95 Q130,72 112,62 Q100,56 88,62 Q70,72 70,95 Z"/>
+    
+    <!-- Dish inner gradient effect -->
+    <path
+        android:fillColor="@color/twitch_purple"
+        android:pathData="M70,95 Q70,75 85,64 Q100,58 115,64 Q130,75 130,95 L125,98 Q125,80 110,71 Q100,66 90,71 Q75,80 75,98 Z"
+        android:fillAlpha="0.5"/>
+    
+    <!-- Dish Rim (outline) -->
+    <path
+        android:strokeColor="@color/twitch_purple_dark"
+        android:strokeWidth="3"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M60,90 Q60,65 80,50 Q100,40 120,50 Q140,65 140,90"/>
+    
+    <!-- LNB Feed (the receiver at the focal point) -->
+    <path
+        android:fillColor="@color/twitch_purple_light"
+        android:pathData="M95,95 L105,95 L105,108 L95,108 Z"/>
+    
+    <path
+        android:fillColor="@color/text_accent"
+        android:pathData="M100,108m-6,0a6,6 0,1,1 12,0a6,6 0,1,1 -12,0"/>
+    
+    <!-- Support arms from dish to LNB -->
+    <path
+        android:strokeColor="@color/text_accent"
+        android:strokeWidth="3"
+        android:pathData="M70,92 L95,100 M130,92 L105,100"/>
+    
+    <!-- Signal waves emanating from dish (left side) -->
+    <path
+        android:strokeColor="@color/success_color"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M50,80 Q45,60 65,45"
+        android:strokeAlpha="0.7"/>
+    
+    <path
+        android:strokeColor="@color/success_color"
+        android:strokeWidth="3.5"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M40,75 Q32,50 60,30"
+        android:strokeAlpha="0.5"/>
+    
+    <path
+        android:strokeColor="@color/success_color"
+        android:strokeWidth="3"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M30,70 Q20,40 55,18"
+        android:strokeAlpha="0.3"/>
+    
+    <!-- Signal waves (right side) -->
+    <path
+        android:strokeColor="@color/success_color"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M150,80 Q155,60 135,45"
+        android:strokeAlpha="0.7"/>
+    
+    <path
+        android:strokeColor="@color/success_color"
+        android:strokeWidth="3.5"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M160,75 Q168,50 140,30"
+        android:strokeAlpha="0.5"/>
+    
+    <path
+        android:strokeColor="@color/success_color"
+        android:strokeWidth="3"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M170,70 Q180,40 145,18"
+        android:strokeAlpha="0.3"/>
+    
+    <!-- PulseRelay text below -->
+    <path
+        android:fillColor="@color/text_primary"
+        android:pathData="M60,195 L140,195 L140,198 L60,198 Z"
+        android:fillAlpha="0.3"/>
+</vector>

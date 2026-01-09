@@ -1,0 +1,734 @@
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <div class="row justify-content-center align-items-center" style="min-height: 100vh;">
+            <div class="col-lg-8 col-md-10 text-center">
+                <!-- Logo and Brand -->
+                <div class="hero-brand mb-5" style="text-align: center;">
+                    <i class="fas fa-broadcast-tower text-gradient mb-4" style="font-size: 5rem;"></i>
+                    <h1 class="hero-title mb-4">
+                        <span class="text-gradient">PulseRelay</span>
+                    </h1>
+                    <div style="display: flex; justify-content: center; width: 100%;">
+                        <p class="hero-subtitle text-light-muted mb-5">
+                            Next-Generation RTMP Streaming Platform with Mobile Integration
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="alert alert-danger mb-4">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <%= error %>
+                    </div>
+                <% } %>
+
+                <!-- User Actions -->
+                <% if (typeof user !== 'undefined' && user) { %>
+                    <!-- Authenticated User Dashboard -->
+                    <div class="user-welcome-section">
+                        <div class="welcome-message mb-4">
+                            <h3 class="text-white mb-3">Welcome back, <span class="text-gradient"><%= user.display_name || user.username %></span>!</h3>
+                            <p class="text-light-muted mb-0">Ready to start streaming?</p>
+                        </div>
+                        
+                        <div class="action-buttons d-flex gap-3 justify-content-center flex-wrap">
+                            <a href="/dashboard" class="btn btn-primary btn-lg px-5">
+                                <i class="fas fa-tachometer-alt me-2"></i>
+                                Dashboard
+                            </a>
+                            <a href="/stream" class="btn btn-outline-light btn-lg px-5">
+                                <i class="fas fa-video me-2"></i>
+                                Stream Control
+                            </a>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <!-- Unauthenticated User - CTA -->
+                    <div class="cta-section" style="text-align: center;">
+                        <p class="hero-description text-light-muted mb-5">
+                            Professional streaming with GPS tracking, voice alerts, and dynamic overlays
+                        </p>
+                        
+                        <!-- YouTube Video Embed -->
+                        <div class="video-container mb-5 mx-auto">
+                            <div class="ratio ratio-16x9">
+                                <iframe src="https://www.youtube-nocookie.com/embed/y4AXgJmPC0o?rel=0&modestbranding=1" 
+                                        title="PulseRelay Demo" 
+                                        frameborder="0" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                        referrerpolicy="strict-origin-when-cross-origin"
+                                        allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; width: 100%;">
+                            <p class="hero-cta text-light-muted mb-3">
+                                Connect with your Twitch account to get started
+                            </p>
+                            <a href="/auth/twitch" class="btn twitch-connect btn-lg">
+                                <i class="fab fa-twitch twitch-icon"></i>
+                                Connect with Twitch
+                            </a>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Showcase Section -->
+<div class="features-section py-5 bg-dark text-white">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title mb-3">Powerful Features</h2>
+            <p class="lead" style="opacity: 0.9;">Everything you need for professional IRL streaming</p>
+        </div>
+
+        <!-- Core Features Grid -->
+        <div class="row g-4 mb-5 justify-content-center">
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box">
+                    <div class="feature-icon-large mb-3">
+                        <i class="fab fa-android"></i>
+                    </div>
+                    <h5 class="mb-2">Android App</h5>
+                    <p class="small" style="opacity: 0.8;">GPS tracking, adaptive intervals, fixed location mode with map picker</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box">
+                    <div class="feature-icon-large mb-3">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h5 class="mb-2">Map Overlay</h5>
+                    <p class="small" style="opacity: 0.8;">Real-time GPS location display on your stream with smooth animations</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box">
+                    <div class="feature-icon-large mb-3">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h5 class="mb-2">Telemetry Overlay</h5>
+                    <p class="small" style="opacity: 0.8;">Speed, signal strength, battery level, and connection status</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box">
+                    <div class="feature-icon-large mb-3">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h5 class="mb-2">Media Overlay</h5>
+                    <p class="small" style="opacity: 0.8;">Upload images/videos from Android app, 30s auto-display on stream</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Features Grid -->
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box">
+                    <div class="feature-icon-large mb-3">
+                        <i class="fas fa-th-large"></i>
+                    </div>
+                    <h5 class="mb-2">Pulse Deck</h5>
+                    <p class="small" style="opacity: 0.8;">Customizable control panel in Android app for stream actions</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box">
+                    <div class="feature-icon-large mb-3">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <h5 class="mb-2">Text-to-Speech (TTS)</h5>
+                    <p class="small" style="opacity: 0.8;">Voice alerts and announcements integrated with your stream</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box">
+                    <div class="feature-icon-large mb-3">
+                        <i class="fas fa-stream"></i>
+                    </div>
+                    <h5 class="mb-2">Multi-Destination Restreaming</h5>
+                    <p class="small" style="opacity: 0.8;">Stream to multiple platforms simultaneously with ease</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box">
+                    <div class="feature-icon-large mb-3">
+                        <i class="fab fa-twitch"></i>
+                    </div>
+                    <h5 class="mb-2">Twitch Integration</h5>
+                    <p class="small" style="opacity: 0.8;">OAuth authentication and seamless Twitch connectivity</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Android App Showcase -->
+<div class="showcase-section android-showcase py-5 bg-dark text-white">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-lg-5 col-md-6 mb-4 mb-lg-0 text-center">
+                <div class="screenshot-container">
+                    <div class="phone-frame mx-auto">
+                        <div class="android-carousel">
+                            <img src="/img/screenshots/android-1.jpg" alt="PulseRelay Android App" class="carousel-image active">
+                            <img src="/img/screenshots/android-2.jpg" alt="PulseRelay Android App" class="carousel-image">
+                            <img src="/img/screenshots/android-3.jpg" alt="PulseRelay Android App" class="carousel-image">
+                            <img src="/img/screenshots/android-4.jpg" alt="PulseRelay Android App" class="carousel-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-6">
+                <h3 class="mb-4">PulseRelay Android App</h3>
+                <p class="lead mb-4" style="opacity: 0.9;">Professional mobile streaming companion</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check-circle text-success me-2"></i> Live stream preview with overlays</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i> Real-time GPS location tracking</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i> Twitch chat monitoring</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i> Text-to-Speech voice alerts</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i> Pulse Deck - customizable stream controls</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i> Picture & video uploads to overlay</li>
+                </ul>
+                <div class="mt-4">
+                    <a href="https://github.com/brocosoup/PulseRelay/tree/main/android" class="btn btn-primary btn-lg" target="_blank">
+                        <i class="fab fa-github me-2"></i>
+                        View on GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- OBS Overlays Showcase -->
+<div class="showcase-section overlays-showcase py-5" style="background: #1a1a1a;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h3 class="mb-3 text-white">Professional OBS Overlays</h3>
+            <p class="lead" style="opacity: 0.9; color: white;">Four powerful browser sources for your stream</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-3 col-md-6">
+                <div class="overlay-card">
+                    <div class="overlay-screenshot" style="cursor: zoom-in; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
+                        <img src="/img/screenshots/map-overlay.png" alt="Map Overlay" class="img-fluid overlay-image" data-overlay-image="/img/screenshots/map-overlay.png" style="width: 100%; height: auto; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; user-drag: none; pointer-events: auto;">
+                    </div>
+                    <div class="p-4">
+                        <h5 class="mb-3 text-white">Map Overlay</h5>
+                        <p class="small mb-3" style="color: #666;">Real-time GPS location with animated marker and smooth transitions</p>
+                        <div class="tech-tags">
+                            <span class="badge bg-secondary">Leaflet.js</span>
+                            <span class="badge bg-secondary">OpenStreetMap</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="overlay-card">
+                    <div class="overlay-screenshot" style="cursor: zoom-in; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
+                        <img src="/img/screenshots/telemetry-overlay.png" alt="Telemetry Overlay" class="img-fluid overlay-image" data-overlay-image="/img/screenshots/telemetry-overlay.png" style="width: 100%; height: auto; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; user-drag: none; pointer-events: auto;">
+                    </div>
+                    <div class="p-4">
+                        <h5 class="mb-3 text-white">Telemetry Overlay</h5>
+                        <p class="small mb-3" style="color: #666;">Speed, signal, battery, and connection status in real-time</p>
+                        <div class="tech-tags">
+                            <span class="badge bg-secondary">WebSocket</span>
+                            <span class="badge bg-secondary">Live Data</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="overlay-card">
+                    <div class="overlay-screenshot" style="cursor: zoom-in; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
+                        <img src="/img/screenshots/media-overlay.png" alt="Media Overlay" class="img-fluid overlay-image" data-overlay-image="/img/screenshots/media-overlay.png" style="width: 100%; height: auto; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; user-drag: none; pointer-events: auto;">
+                    </div>
+                    <div class="p-4">
+                        <h5 class="mb-3 text-white">Media Overlay</h5>
+                        <p class="small mb-3" style="color: #666;">Auto-display uploaded media for 30 seconds with smooth transitions</p>
+                        <div class="tech-tags">
+                            <span class="badge bg-secondary">Auto-rotate</span>
+                            <span class="badge bg-secondary">10MB Max</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="overlay-card">
+                    <div class="overlay-screenshot" style="cursor: zoom-in; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
+                        <img src="/img/screenshots/stream-status-overlay.png" alt="Stream Status Overlay" class="img-fluid overlay-image" data-overlay-image="/img/screenshots/stream-status-overlay.png" style="width: 100%; height: auto; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; user-drag: none; pointer-events: auto;">
+                    </div>
+                    <div class="p-4">
+                        <h5 class="mb-3 text-white">Stream Status Overlay</h5>
+                        <p class="small mb-3" style="color: #666;">Live stream indicators with quality monitoring and alerts</p>
+                        <div class="tech-tags">
+                            <span class="badge bg-secondary">Real-time</span>
+                            <span class="badge bg-secondary">Quality Monitor</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Technical Details Section -->
+<div class="tech-section py-5 bg-dark text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h3 class="mb-4">Built with Modern Technology</h3>
+                <div class="row g-3 justify-content-center">
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="tech-badge">
+                            <i class="fab fa-node-js text-success"></i>
+                            <p class="mb-0 mt-2 small">Node.js</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="tech-badge">
+                            <i class="fas fa-server text-primary"></i>
+                            <p class="mb-0 mt-2 small">Express</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="tech-badge">
+                            <i class="fab fa-bootstrap text-purple"></i>
+                            <p class="mb-0 mt-2 small">Bootstrap</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="tech-badge">
+                            <i class="fab fa-android text-success"></i>
+                            <p class="mb-0 mt-2 small">Android</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="cta-final py-5 bg-dark text-white">
+    <div class="container text-center">
+        <h3 class="mb-3">Ready to Transform Your Streaming?</h3>
+        <p class="lead mb-4">Join the next generation of IRL streamers</p>
+        <% if (!user) { %>
+            <p class="text-light-muted mb-3">Connect with your Twitch account to get started</p>
+            <div style="display: inline-block;">
+                <a href="/auth/twitch" class="btn twitch-connect btn-lg">
+                    <i class="fab fa-twitch twitch-icon"></i>
+                    Connect with Twitch
+                </a>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<!-- Additional CSS Styles -->
+<style>
+/* Prevent text selection on entire page */
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Allow text selection only in input fields */
+input, textarea {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="0.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.hero-brand {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-title {
+    font-size: 4.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.hero-description {
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.8;
+}
+
+.hero-cta {
+    font-size: 1.125rem;
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+.text-gradient {
+    background: linear-gradient(45deg, #ffffff, #f8f9fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-light-muted {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border: none;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+    background: linear-gradient(45deg, #5a6fd8, #6a4190);
+}
+
+.btn-outline-light {
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.welcome-message {
+    padding: 2.5rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.welcome-message h3 {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.cta-section {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.video-container {
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* Features Section */
+.features-section {
+    background: #ffffff;
+    padding: 5rem 0;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 1rem;
+}
+
+.feature-box {
+    padding: 2.5rem 2rem;
+    border-radius: 1rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    text-align: center;
+}
+
+.feature-box:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 28px rgba(102, 126, 234, 0.2);
+    border-color: #9146FF;
+}
+
+.feature-icon-large {
+    font-size: 3.5rem;
+    color: #9146FF;
+    margin-bottom: 1.5rem;
+}
+
+.feature-box h5 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 1rem;
+}
+
+/* Showcase Sections */
+.showcase-section {
+    background: #f7fafc;
+    padding: 5rem 0;
+}
+
+.android-showcase {
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+}
+
+.phone-frame {
+    max-width: 350px;
+    border-radius: 2rem;
+    border: 8px solid #2d3748;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+    background: #1a202c;
+}
+
+.phone-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.screenshot-container {
+    position: relative;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+}
+
+.feature-list li {
+    padding: 0.75rem 0;
+    font-size: 1.05rem;
+    color: #4a5568;
+}
+
+.android-showcase h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+/* Overlay Cards */
+.overlay-card {
+    border-radius: 1rem;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.overlay-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 28px rgba(102, 126, 234, 0.2);
+}
+
+.overlay-screenshot {
+    background: #f7fafc;
+    border-bottom: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.overlay-screenshot img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.overlays-showcase h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.overlay-card h5 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.tech-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.tech-tags .badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+}
+
+/* Tech Section */
+.tech-section {
+    background: #ffffff;
+    padding: 4rem 0;
+}
+
+.tech-section h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 2rem;
+}
+
+.tech-badge {
+    padding: 2rem 1.5rem;
+    border-radius: 0.75rem;
+    background: #f7fafc;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.tech-badge:hover {
+    background: #edf2f7;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.tech-badge i {
+    font-size: 3rem;
+}
+
+.tech-badge p {
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.text-purple {
+    color: #9146FF !important;
+}
+
+/* CTA Final */
+.cta-final {
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+    padding: 4rem 0;
+}
+
+.cta-final h3 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.cta-final .lead {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 3rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.25rem;
+    }
+    
+    .hero-description {
+        font-size: 1.125rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .feature-icon-large {
+        font-size: 2.5rem;
+    }
+    
+    .phone-frame {
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .hero-description {
+        font-size: 1rem;
+    }
+    
+    .section-title {
+        font-size: 1.75rem;
+    }
+    
+    .welcome-message {
+        padding: 2rem 1.5rem;
+    }
+}
+</style>
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-dark">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-0">
+                <img id="modalImage" src="" alt="" class="img-fluid" style="max-height: 85vh; width: auto;">
+            </div>
+        </div>
+    </div>
+</div>

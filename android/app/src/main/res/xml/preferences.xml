@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:title="@string/api_settings"
+        app:iconSpaceReserved="false">
+
+        <EditTextPreference
+            app:key="api_url"
+            app:title="@string/api_url_title"
+            app:summary="@string/api_url_summary"
+            app:defaultValue="@string/api_url_default"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false"/>
+
+        <EditTextPreference
+            app:key="target_channel"
+            app:title="Target Channel"
+            app:summary="Twitch channel name for stream commands"
+            app:defaultValue=""
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false"/>
+
+        <EditTextPreference
+            app:key="jwt_token"
+            app:title="@string/api_token_title"
+            app:summary="@string/api_token_summary"
+            app:defaultValue=""
+            app:useSimpleSummaryProvider="false"
+            app:iconSpaceReserved="false"/>
+
+        <Preference
+            app:key="logout"
+            app:title="Clear Token (Logout)"
+            app:summary="No token to clear"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/tracking_settings"
+        app:iconSpaceReserved="false">
+
+        <SeekBarPreference
+            app:key="update_interval"
+            app:title="@string/update_interval_title"
+            app:summary="@string/update_interval_summary"
+            app:defaultValue="30"
+            android:min="5"
+            android:max="300"
+            app:showSeekBarValue="true"
+            app:iconSpaceReserved="false"/>
+
+        <SwitchPreferenceCompat
+            app:key="auto_start"
+            app:title="Auto-start on Boot"
+            app:summary="Automatically start tracking when device boots"
+            app:defaultValue="false"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="Display"
+        app:iconSpaceReserved="false">
+
+        <SwitchPreferenceCompat
+            app:key="keep_screen_on"
+            app:title="Keep Screen On"
+            app:summary="Prevent screen from turning off when app is in foreground"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="Text-to-Speech"
+        app:iconSpaceReserved="false">
+
+        <EditTextPreference
+            app:key="tts_ignored_users"
+            app:title="Ignored Users"
+            app:summary="Comma-separated usernames to ignore (e.g., bot1,bot2)"
+            app:defaultValue=""
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false"/>
+
+        <ListPreference
+            app:key="tts_audio_channel"
+            app:title="Audio Channel"
+            app:summary="Select which audio channel TTS uses"
+            app:entries="@array/tts_audio_channel_entries"
+            app:entryValues="@array/tts_audio_channel_values"
+            app:defaultValue="voice"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="Pulse Deck"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            app:key="export_layout"
+            app:title="Export Layout"
+            app:summary="Save Pulse Deck configuration to file"
+            app:iconSpaceReserved="false"/>
+
+        <Preference
+            app:key="import_layout"
+            app:title="Import Layout"
+            app:summary="Load Pulse Deck configuration from file"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/video_settings"
+        app:iconSpaceReserved="false">
+
+        <EditTextPreference
+            app:key="default_twitch_channel"
+            app:title="@string/default_twitch_channel_title"
+            app:summary="@string/default_twitch_channel_summary"
+            app:defaultValue=""
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false"/>
+
+        <SwitchPreferenceCompat
+            app:key="auto_load_video"
+            app:title="@string/auto_load_video_title"
+            app:summary="@string/auto_load_video_summary"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"/>
+
+        <ListPreference
+            app:key="video_quality"
+            app:title="@string/video_quality_title"
+            app:summary="@string/video_quality_summary"
+            app:entries="@array/video_quality_entries"
+            app:entryValues="@array/video_quality_values"
+            app:defaultValue="auto"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="Configuration Backup"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            app:key="export_config"
+            app:title="Export Configuration"
+            app:summary="Save all settings to encrypted file"
+            app:iconSpaceReserved="false"/>
+
+        <Preference
+            app:key="import_config"
+            app:title="Import Configuration"
+            app:summary="Load settings from encrypted file"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

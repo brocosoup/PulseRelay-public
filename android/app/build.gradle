@@ -1,0 +1,121 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Load API keys from local.properties
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withInputStream { stream ->
+        localProperties.load(stream)
+    }
+}
+
+android {
+    namespace = 'com.pulserelay.locationtracker'
+    compileSdk = 34
+
+    defaultConfig {
+        applicationId = "com.pulserelay.locationtracker"
+        minSdk = 21
+        targetSdk = 34
+        // Auto-increment versionCode based on timestamp to prevent conflicts
+        versionCode = getVersionCodeTimestamp()
+        versionName = "1.0." + getVersionCodeTimestamp()
+        multiDexEnabled = true
+        
+        // Inject Google Maps API key from local.properties into AndroidManifest.xml
+        manifestPlaceholders = [
+            MAPS_API_KEY: localProperties.getProperty('MAPS_API_KEY', 'YOUR_GOOGLE_MAPS_API_KEY_HERE')
+        ]
+    }
+
+    signingConfigs {
+        release {
+            def keystoreFile = file('pulserelay-release-key.jks')
+            if (keystoreFile.exists()) {
+                storeFile keystoreFile
+                storePassword 'pulserelay123'
+                keyAlias 'pulserelay'
+                keyPassword 'pulserelay123'
+            }
+        }
+        debug {
+            // Use same keystore as release for seamless updates
+            def keystoreFile = file('pulserelay-release-key.jks')
+            if (keystoreFile.exists()) {
+                storeFile keystoreFile
+                storePassword 'pulserelay123'
+                keyAlias 'pulserelay'
+                keyPassword 'pulserelay123'
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled = true
+            shrinkResources = true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig = signingConfigs.release
+        }
+        debug {
+            minifyEnabled = false
+            signingConfig = signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:deprecation"
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.android.gms:play-services-maps:18.2.0'
+    implementation 'androidx.preference:preference:1.2.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
+    
+    // Retrofit for API calls
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0'
+    
+    // Gson for JSON parsing
+    implementation 'com.google.code.gson:gson:2.10.1'
+    
+    // Encrypted SharedPreferences for secure token storage
+    implementation 'androidx.security:security-crypto:1.1.0-alpha06'
+    
+    // Lifecycle components (LiveData & ViewModel)
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-runtime:2.6.2'
+    
+    // RecyclerView
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    
+    // Fragment
+    implementation 'androidx.fragment:fragment:1.6.2'
+    
+    // SwipeRefreshLayout
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    
+    // CoordinatorLayout
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
+}
+
+// Generate unique versionCode based on timestamp to allow seamless updates
+def getVersionCodeTimestamp() {
+    return (int) (System.currentTimeMillis() / 1000)
+}
